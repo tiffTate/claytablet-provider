@@ -46,6 +46,7 @@ public abstract class AbsProviderSenderTest extends TestCase {
 
 	protected final String PLATFORM_ACCOUNT_ID = "ctt-platform";
 
+	// TODO - replace this with your assigned account identifier
 	protected final String PROVIDER_ACCOUNT_ID = "ctt-provider-tms1";
 
 	// -------------------------------------------------------------------------
