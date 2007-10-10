@@ -5,7 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.claytablet.module.SQSS3Module;
 import com.claytablet.service.event.EventListener;
-import com.claytablet.service.event.impl.EventListenerProvider;
+import com.claytablet.service.event.impl.ProviderEventListenerImpl;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -50,7 +50,7 @@ public class ProviderEventCron {
 
 		// load the listener
 		EventListener listener = injector
-				.getInstance(EventListenerProvider.class);
+				.getInstance(ProviderEventListenerImpl.class);
 
 		log.debug("Start the endless loop.");
 		while (true) {
