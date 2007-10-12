@@ -74,8 +74,12 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			super.downloadLatestAssetTaskVersion(event.getTargetAccountId(),
-					event.getAssetTaskId());
+			String downloadPath = super.downloadLatestAssetTaskVersion(event
+					.getTargetAccountId(), event.getAssetTaskId(),
+					"./files/received/");
+
+			log.debug("Downloaded an asset task version file to: "
+					+ downloadPath);
 		}
 
 		// TODO - provider integration code goes here.
@@ -133,8 +137,12 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			super.downloadLatestAssetTaskVersion(event.getTargetAccountId(),
-					event.getAssetTaskId());
+			String downloadPath = super.downloadLatestAssetTaskVersion(event
+					.getTargetAccountId(), event.getAssetTaskId(),
+					"./files/received/");
+
+			log.debug("Downloaded an asset task version file to: "
+					+ downloadPath);
 		}
 
 		// TODO - provider integration code goes here.
@@ -154,8 +162,11 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 
 		log.debug("Download the latest asset task revision for: "
 				+ event.getAssetTaskId());
-		super.downloadLatestAssetTaskVersion(event.getTargetAccountId(), event
-				.getAssetTaskId());
+		String downloadPath = super.downloadLatestAssetTaskVersion(event
+				.getTargetAccountId(), event.getAssetTaskId(),
+				"./files/received/");
+
+		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
 		// TODO - provider integration code goes here.
 		// I.e. send the asset to the TMS and mark it as pending.
