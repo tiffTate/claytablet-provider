@@ -2,11 +2,11 @@ package com.claytablet.service.event.impl;
 
 import com.claytablet.factory.QueuePublisherServiceFactory;
 import com.claytablet.factory.StorageClientServiceFactory;
+import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
+import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
-import com.claytablet.model.event.producer.ApproveAssetTask;
 import com.claytablet.model.event.producer.CancelAssetTask;
-import com.claytablet.model.event.producer.RejectAssetTask;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.storage.service.StorageClientService;
@@ -61,9 +61,9 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.claytablet.service.event.ReceiverProvider#receiveEvent(com.claytablet.model.event.producer.ApproveAssetTask)
+	 * @see com.claytablet.service.event.ReceiverProvider#receiveEvent(com.claytablet.model.event.producer.ApprovedAssetTask)
 	 */
-	public void receiveEvent(ApproveAssetTask event)
+	public void receiveEvent(ApprovedAssetTask event)
 			throws StorageServiceException, EventServiceException {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
@@ -124,9 +124,9 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.claytablet.service.event.ReceiverProvider#receiveEvent(com.claytablet.model.event.producer.RejectAssetTask)
+	 * @see com.claytablet.service.event.ReceiverProvider#receiveEvent(com.claytablet.model.event.producer.RejectedAssetTask)
 	 */
-	public void receiveEvent(RejectAssetTask event)
+	public void receiveEvent(RejectedAssetTask event)
 			throws StorageServiceException, EventServiceException {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");

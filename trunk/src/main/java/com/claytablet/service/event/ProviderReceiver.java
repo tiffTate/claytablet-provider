@@ -1,6 +1,8 @@
 package com.claytablet.service.event;
 
+import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
+import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.producer.ApproveAssetTask;
 import com.claytablet.model.event.producer.CancelAssetTask;
@@ -49,7 +51,7 @@ import com.google.inject.ImplementedBy;
 public interface ProviderReceiver extends AbsEventClient {
 
 	/**
-	 * Receives an approve asset task event.
+	 * Receives an approved asset task event.
 	 * 
 	 * <p>
 	 * This is how providers are notified of approved work.
@@ -59,7 +61,7 @@ public interface ProviderReceiver extends AbsEventClient {
 	 * @throws StorageServiceException
 	 * @throws EventServiceException
 	 */
-	public void receiveEvent(ApproveAssetTask event)
+	public void receiveEvent(ApprovedAssetTask event)
 			throws StorageServiceException, EventServiceException;
 
 	/**
@@ -93,7 +95,7 @@ public interface ProviderReceiver extends AbsEventClient {
 	public void receiveEvent(ProcessingError event);
 
 	/**
-	 * Receives a reject asset task event.
+	 * Receives a rejected asset task event.
 	 * 
 	 * <p>
 	 * This is how providers are notified of rejected work.
@@ -103,7 +105,7 @@ public interface ProviderReceiver extends AbsEventClient {
 	 * @throws StorageServiceException
 	 * @throws EventServiceException
 	 */
-	public void receiveEvent(RejectAssetTask event)
+	public void receiveEvent(RejectedAssetTask event)
 			throws StorageServiceException, EventServiceException;
 
 	/**
