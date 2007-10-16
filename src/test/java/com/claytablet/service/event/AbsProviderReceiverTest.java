@@ -11,10 +11,10 @@ import org.junit.Test;
 import com.claytablet.model.enm.ContentType;
 import com.claytablet.model.enm.FileType;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
+import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
-import com.claytablet.model.event.producer.CancelAssetTask;
 import com.claytablet.util.LanguageUtil;
 
 /**
@@ -142,15 +142,15 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 	}
 
 	/**
-	 * Test for CancelAssetTask event reception.
+	 * Test for CanceledAssetTask event reception.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testCancelAssetTask() throws Exception {
+	public void testCanceledAssetTask() throws Exception {
 
 		log.debug("Create a mock CancelAssetTask event.");
-		CancelAssetTask event = new CancelAssetTask();
+		CanceledAssetTask event = new CanceledAssetTask();
 		event.setSourceAccountId(PLATFORM_ACCOUNT_ID);
 		event.setTargetAccountId(PROVIDER_ACCOUNT_ID);
 		event.setAssetTaskId("mock-asset-task-id");
@@ -164,12 +164,12 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 	}
 
 	/**
-	 * Test for RejectAssetTask event reception.
+	 * Test for RejectedAssetTask event reception.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testRejectAssetTask() throws Exception {
+	public void testRejectedAssetTask() throws Exception {
 
 		log.debug("Create a mock RejectedAssetTask event.");
 		RejectedAssetTask event = new RejectedAssetTask();
@@ -192,12 +192,12 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 	}
 
 	/**
-	 * Test for ApproveAssetTask event reception.
+	 * Test for ApprovedAssetTask event reception.
 	 * 
 	 * @throws Exception
 	 */
 	@Test
-	public void testApproveAssetTask() throws Exception {
+	public void testApprovedAssetTask() throws Exception {
 
 		log.debug("Create a mock ApprovedAssetTask event.");
 		ApprovedAssetTask event = new ApprovedAssetTask();
