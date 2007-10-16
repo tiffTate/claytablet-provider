@@ -1,11 +1,11 @@
 package com.claytablet.service.event;
 
 import com.claytablet.model.event.platform.ApprovedAssetTask;
+import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.producer.ApproveAssetTask;
-import com.claytablet.model.event.producer.CancelAssetTask;
 import com.claytablet.model.event.producer.RejectAssetTask;
 import com.claytablet.service.event.impl.ProviderReceiverImpl;
 import com.claytablet.storage.service.StorageServiceException;
@@ -77,7 +77,7 @@ public interface ProviderReceiver extends AbsEventClient {
 	 * @param event
 	 *            The event to process.
 	 */
-	public void receiveEvent(CancelAssetTask event);
+	public void receiveEvent(CanceledAssetTask event);
 
 	/**
 	 * Receives a processing error event.
