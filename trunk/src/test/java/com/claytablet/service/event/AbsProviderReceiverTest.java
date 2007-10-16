@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import com.claytablet.model.enm.ContentType;
 import com.claytablet.model.enm.FileType;
+import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
+import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
-import com.claytablet.model.event.producer.ApproveAssetTask;
 import com.claytablet.model.event.producer.CancelAssetTask;
-import com.claytablet.model.event.producer.RejectAssetTask;
 import com.claytablet.util.LanguageUtil;
 
 /**
@@ -171,8 +171,8 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 	@Test
 	public void testRejectAssetTask() throws Exception {
 
-		log.debug("Create a mock RejectAssetTask event.");
-		RejectAssetTask event = new RejectAssetTask();
+		log.debug("Create a mock RejectedAssetTask event.");
+		RejectedAssetTask event = new RejectedAssetTask();
 		event.setSourceAccountId(PLATFORM_ACCOUNT_ID);
 		event.setTargetAccountId(PROVIDER_ACCOUNT_ID);
 		event.setAssetTaskId("mock-asset-task-id");
@@ -199,8 +199,8 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 	@Test
 	public void testApproveAssetTask() throws Exception {
 
-		log.debug("Create a mock ApproveAssetTask event.");
-		ApproveAssetTask event = new ApproveAssetTask();
+		log.debug("Create a mock ApprovedAssetTask event.");
+		ApprovedAssetTask event = new ApprovedAssetTask();
 		event.setSourceAccountId(PLATFORM_ACCOUNT_ID);
 		event.setTargetAccountId(PROVIDER_ACCOUNT_ID);
 		event.setAssetTaskId("mock-asset-task-id");
