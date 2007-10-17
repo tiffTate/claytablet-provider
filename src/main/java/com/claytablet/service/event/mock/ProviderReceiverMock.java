@@ -7,6 +7,8 @@ import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
+import com.claytablet.model.event.provider.SubmitAssetTask;
+import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.service.event.ProviderSender;
@@ -95,9 +97,7 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 					+ downloadPath);
 		}
 
-		// TODO - provider integration code goes here.
-
-		// If an exception is thrown the event will remain on the queue.
+		// do nothing
 	}
 
 	/*
@@ -109,9 +109,7 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// TODO - provider integration code goes here.
-
-		// If an exception is thrown the event will remain on the queue.
+		// do nothing
 
 	}
 
@@ -152,11 +150,22 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
+
+			log.debug("Submit the mock event.");
+			SubmitAssetTask event2 = new SubmitAssetTask();
+			event2.setSourceAccountId(PROVIDER_ACCOUNT_ID);
+			event2.setTargetAccountId(PLATFORM_ACCOUNT_ID);
+			event2.setAssetTaskId(event.getAssetTaskId());
+			event2.setNativeState("Mock State");
+
+			try {
+				providerSender.sendEvent(event2, downloadPath);
+			} catch (QueueServiceException e) {
+				log.error(e);
+			}
+
 		}
 
-		// TODO - provider integration code goes here.
-
-		// If an exception is thrown the event will remain on the queue.
 	}
 
 	/*
@@ -177,12 +186,18 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
-		// TODO - provider integration code goes here.
-		// I.e. send the asset to the TMS and mark it as pending.
+		log.debug("Submit the mock event.");
+		SubmitAssetTask event2 = new SubmitAssetTask();
+		event2.setSourceAccountId(PROVIDER_ACCOUNT_ID);
+		event2.setTargetAccountId(PLATFORM_ACCOUNT_ID);
+		event2.setAssetTaskId(event.getAssetTaskId());
+		event2.setNativeState("Mock State");
 
-		// I.e. call an external system method called new document
-
-		// If an exception is thrown the event will remain on the queue.
+		try {
+			providerSender.sendEvent(event2, downloadPath);
+		} catch (QueueServiceException e) {
+			log.error(e);
+		}
 
 	}
 
