@@ -79,4 +79,13 @@
 
 	</target>
 
+	<target name="event" depends="compile" description="The event listener cron.">
+		<java classname="com.claytablet.app.ProviderEventCron">
+			<classpath refid="master.classpath"/>
+			<classpath>
+				<pathelement path="${target.compile.main.dir}"/>
+			</classpath>
+		</java>
+	</target>
+
 </project>
