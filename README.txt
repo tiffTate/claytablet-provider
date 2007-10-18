@@ -61,7 +61,7 @@ If using SQS:
 
 *********
 WARNING FOR J2SE 6
-Java SE 6 comes with JAXB 2.0. If you are using 6 then the following JAXB jars 
+Java SE 6 comes with JAXB 2.0. If you are using 6 or javaee then the following JAXB jars 
 should be removed from the lib dir and placed into the jre/lib/endoresed dir.
 *********
 - activation.jar
