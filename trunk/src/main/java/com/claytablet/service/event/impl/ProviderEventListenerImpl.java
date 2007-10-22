@@ -7,9 +7,9 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.claytablet.app.ProviderEventCron;
-import com.claytablet.factory.QueueSubscriberServiceFactory;
 import com.claytablet.model.event.AbsEvent;
+import com.claytablet.model.event.Account;
+import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.queue.model.Message;
 import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.queue.service.QueueSubscriberService;
@@ -40,50 +40,61 @@ import com.google.inject.Singleton;
  * @author <a href="mailto:drapin@clay-tablet.com">Dave Rapin</a>
  * 
  * <p>
- * This is the default implementation for the provider event listener.
+ * This is the provider implementation of the event listener.
  * 
- * <p>
- * @see ProviderEventCron
+ * @see EventListener
+ * @see SourceAccountProvider
+ * @see QueueSubscriberService
  * @see ProviderReceiver
+ * @see Message
  */
 @Singleton
 public class ProviderEventListenerImpl implements EventListener {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private QueueSubscriberServiceFactory queueSubscriberServiceFactory;
+	private SourceAccountProvider sap;
+
+	private QueueSubscriberService queueSubscriberService;
 
 	private ProviderReceiver receiver;
 
 	/**
+	 * Constructor for dependency injection.
+	 * 
 	 * @param queueSubscriberServiceFactory
 	 * @param platformReceiver
 	 * @param platformSender
 	 */
 	@Inject
-	public ProviderEventListenerImpl(
-			QueueSubscriberServiceFactory queueSubscriberServiceFactory,
+	public ProviderEventListenerImpl(SourceAccountProvider sap,
+			QueueSubscriberService queueSubscriberService,
 			ProviderReceiver providerReceiver) {
-		this.queueSubscriberServiceFactory = queueSubscriberServiceFactory;
+		this.sap = sap;
+		this.queueSubscriberService = queueSubscriberService;
 		this.receiver = providerReceiver;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see com.claytablet.app.EventListener#checkMessages(java.lang.String,
-	 *      int)
+	 * @see com.claytablet.service.event.EventListener#checkMessages(int)
 	 */
-	public void checkMessages(String accountId, int maxMessages)
-			throws EventServiceException, QueueServiceException {
+	public void checkMessages(int maxMessages) throws EventServiceException,
+			QueueServiceException {
 
-		// retrieve the initialized queue subscriber service from the
-		// factory
-		QueueSubscriberService subscriber = queueSubscriberServiceFactory
-				.getQueueSubscriberService(accountId);
+		log.debug("Retrieve the source account from the provider.");
+		Account sourceAccount = sap.get();
+
+		log
+				.debug("Initialize the subscriber service with the credentials and endpoint.");
+		queueSubscriberService.setPublicKey(sourceAccount.getPublicKey());
+		queueSubscriberService.setPrivateKey(sourceAccount.getPrivateKey());
+		queueSubscriberService.setEndpoint(sourceAccount.getQueueEndpoint());
 
 		log.debug("Check for messages.");
-		List<Message> messages = subscriber.receiveMessages(maxMessages);
+		List<Message> messages = queueSubscriberService
+				.receiveMessages(maxMessages);
 
 		log.debug("Found " + messages.size() + " messages.");
 
@@ -95,16 +106,24 @@ public class ProviderEventListenerImpl implements EventListener {
 				log.debug(message.getBody());
 
 				try {
-					handleMessage(accountId, message);
+					handleMessage(message);
 
 					// If any exceptions occured then the message will
 					// remain on the queue. Only if we reach this point will
 					// the message be removed.
 					log.debug("Done with the message. Delete it.");
-					subscriber.deleteMessage(message);
+					queueSubscriberService.deleteMessage(message);
 
 				} catch (Exception e) {
 					log.error(e.getMessage());
+				}
+
+				log.debug("Sleep for 5 seconds.");
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 
@@ -113,16 +132,20 @@ public class ProviderEventListenerImpl implements EventListener {
 	}
 
 	/**
-	 * @param accountId
+	 * Handles processing of an individual messages. The message is deserialized
+	 * and reflection is used to call the appropriate method in the
+	 * ProviderReceiver.
+	 * 
 	 * @param message
+	 *            Required parameter spcifying the message to handle.
 	 * @throws EventServiceException
 	 * @throws QueueServiceException
 	 * @throws IllegalArgumentException
 	 * @throws IllegalAccessException
 	 */
-	private void handleMessage(String accountId, Message message)
-			throws EventServiceException, QueueServiceException,
-			IllegalArgumentException, IllegalAccessException {
+	private void handleMessage(Message message) throws EventServiceException,
+			QueueServiceException, IllegalArgumentException,
+			IllegalAccessException {
 
 		log.debug("Transform the message payload to an event.");
 		AbsEvent event = AbsEvent.fromXml(message.getBody());

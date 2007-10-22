@@ -129,10 +129,6 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 		event.setTags("tag1, tag2");
 		event.setDescription("mock-description");
 
-		log.debug("Upload the asset task version file that is to be started.");
-		receiver.uploadAssetTaskVersion(event.getTargetAccountId(), event
-				.getAssetTaskId(), event.getFileExt(), "assetTaskVersion.txt");
-
 		log.debug("Launch the event.");
 		receiver.receiveEvent(event);
 
@@ -179,10 +175,6 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 		event.setReviewNote("mock-review-note");
 		event.setWithContent(true);
 
-		log.debug("Upload the asset task version file that has been rejected.");
-		receiver.uploadAssetTaskVersion(event.getTargetAccountId(), event
-				.getAssetTaskId(), event.getFileExt(), "assetTaskVersion.txt");
-
 		log.debug("Launch the event.");
 		receiver.receiveEvent(event);
 
@@ -206,10 +198,6 @@ public abstract class AbsProviderReceiverTest extends TestCase {
 		event.setAssetTaskId("mock-asset-task-id");
 		event.setReviewNote("mock-review-note");
 		event.setWithContent(true);
-
-		log.debug("Upload the asset task version file that has been approved.");
-		receiver.uploadAssetTaskVersion(event.getTargetAccountId(), event
-				.getAssetTaskId(), event.getFileExt(), "assetTaskVersion.txt");
 
 		log.debug("Launch the event.");
 		receiver.receiveEvent(event);

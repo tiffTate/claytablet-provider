@@ -1,12 +1,15 @@
 package com.claytablet.service.event.impl;
 
-import com.claytablet.factory.QueuePublisherServiceFactory;
-import com.claytablet.factory.StorageClientServiceFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
+import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.storage.service.StorageClientService;
@@ -37,25 +40,35 @@ import com.google.inject.Singleton;
  * <p>
  * This is the default implementation for the provider receiver.
  * 
- * <p>
+ * @see ProviderReceiver
+ * @see SourceAccountProvider
  * @see StorageClientService
+ * @see ApprovedAssetTask
+ * @see CanceledAssetTask
+ * @see ProcessingError
+ * @see RejectedAssetTask
+ * @see StartAssetTask
  */
 @Singleton
-public class ProviderReceiverImpl extends AbsEventClientImpl implements
-		ProviderReceiver {
+public class ProviderReceiverImpl implements ProviderReceiver {
+
+	private final Log log = LogFactory.getLog(getClass());
+
+	private SourceAccountProvider sap;
+
+	private StorageClientService storageClientService;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param queuePublisherServiceFactory
-	 * @param storageClientServiceFactory
+	 * @param sap
+	 * @param storageClientService
 	 */
 	@Inject
-	public ProviderReceiverImpl(
-			QueuePublisherServiceFactory queuePublisherServiceFactory,
-			StorageClientServiceFactory storageClientServiceFactory) {
-		this.queuePublisherServiceFactory = queuePublisherServiceFactory;
-		this.storageClientServiceFactory = storageClientServiceFactory;
+	public ProviderReceiverImpl(SourceAccountProvider sap,
+			StorageClientService storageClientService) {
+		this.sap = sap;
+		this.storageClientService = storageClientService;
 	}
 
 	/*
@@ -72,11 +85,20 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the approval.");
 
+			// retrieve the source account from the provider.
+			Account sourceAccount = sap.get();
+
+			log.debug("Initialize the storage client service.");
+			storageClientService.setPublicKey(sourceAccount.getPublicKey());
+			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+			storageClientService.setStorageBucket(sourceAccount
+					.getStorageBucket());
+
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = super.downloadLatestAssetTaskVersion(event
-					.getTargetAccountId(), event.getAssetTaskId(),
-					"./files/received/");
+			String downloadPath = storageClientService
+					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+							"./files/received/");
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
@@ -135,11 +157,20 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the rejection.");
 
+			// retrieve the source account from the provider.
+			Account sourceAccount = sap.get();
+
+			log.debug("Initialize the storage client service.");
+			storageClientService.setPublicKey(sourceAccount.getPublicKey());
+			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+			storageClientService.setStorageBucket(sourceAccount
+					.getStorageBucket());
+
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = super.downloadLatestAssetTaskVersion(event
-					.getTargetAccountId(), event.getAssetTaskId(),
-					"./files/received/");
+			String downloadPath = storageClientService
+					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+							"./files/received/");
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
@@ -160,11 +191,19 @@ public class ProviderReceiverImpl extends AbsEventClientImpl implements
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
+		// retrieve the source account from the provider.
+		Account sourceAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(sourceAccount.getPublicKey());
+		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+
 		log.debug("Download the latest asset task revision for: "
 				+ event.getAssetTaskId());
-		String downloadPath = super.downloadLatestAssetTaskVersion(event
-				.getTargetAccountId(), event.getAssetTaskId(),
-				"./files/received/");
+		String downloadPath = storageClientService
+				.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+						"./files/received/");
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 

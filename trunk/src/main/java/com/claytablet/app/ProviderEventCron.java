@@ -5,7 +5,6 @@ import org.apache.commons.logging.LogFactory;
 
 import com.claytablet.module.MockSQSS3Module;
 import com.claytablet.service.event.EventListener;
-import com.claytablet.service.event.impl.ProviderEventListenerImpl;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -42,14 +41,11 @@ public class ProviderEventCron {
 	private static final Log log = LogFactory.getLog(ProviderEventCron.class);
 
 	// the inteval to sleep for in seconds (300 = 5 minutes)
-	private static final int SLEEP_INTERVAL = 300;
+	private static final int SLEEP_INTERVAL = 10;
 
 	// the maximum number of messages to retrieve and process per interval. 0
 	// indicates no limit (all messages available)
 	private static final int MAX_MESSAGES = 0;
-
-	// TODO - replace this with your assigned account identifier
-	private static final String ACCOUNT_ID = "ctt-provider-tms1";
 
 	/**
 	 * @param args
@@ -63,19 +59,19 @@ public class ProviderEventCron {
 		Injector injector = Guice.createInjector(new MockSQSS3Module());
 
 		// load the listener
-		EventListener listener = injector
-				.getInstance(ProviderEventListenerImpl.class);
+		EventListener listener = injector.getInstance(EventListener.class);
 
 		log.debug("Start the endless loop.");
 		while (true) {
 
 			// check for messages
-			listener.checkMessages(ACCOUNT_ID, MAX_MESSAGES);
+			listener.checkMessages(MAX_MESSAGES);
 
 			log.debug("sleeping for " + SLEEP_INTERVAL + " seconds.");
 			Thread.sleep(SLEEP_INTERVAL * 1000);
 
 		}
+
 	}
 
 }

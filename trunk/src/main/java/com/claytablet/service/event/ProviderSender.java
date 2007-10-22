@@ -38,7 +38,7 @@ import com.google.inject.ImplementedBy;
  * @see QueuePublisherService
  */
 @ImplementedBy(ProviderSenderImpl.class)
-public interface ProviderSender extends AbsEventClient {
+public interface ProviderSender {
 
 	// -------------------------------------------------------------------------
 	// Event methods
