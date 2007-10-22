@@ -1,18 +1,20 @@
 package com.claytablet.service.event.mock;
 
-import com.claytablet.factory.QueuePublisherServiceFactory;
-import com.claytablet.factory.StorageClientServiceFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.provider.SubmitAssetTask;
+import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.service.event.ProviderSender;
-import com.claytablet.service.event.impl.AbsEventClientImpl;
 import com.claytablet.storage.service.StorageClientService;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.Inject;
@@ -45,31 +47,30 @@ import com.google.inject.Singleton;
  * @see StorageClientService
  */
 @Singleton
-public class ProviderReceiverMock extends AbsEventClientImpl implements
-		ProviderReceiver {
+public class ProviderReceiverMock implements ProviderReceiver {
+
+	private final Log log = LogFactory.getLog(getClass());
+
+	private SourceAccountProvider sap;
+
+	private StorageClientService storageClientService;
 
 	// we're going to automatically respond to messages
 	private ProviderSender providerSender;
 
-	private static final String PLATFORM_ACCOUNT_ID = "ctt-platform";
-
-	// TODO - replace this with your assigned account identifier
-	private static final String PROVIDER_ACCOUNT_ID = "ctt-provider-tms1";
-
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param queuePublisherServiceFactory
-	 * @param storageClientServiceFactory
+	 * @param sap
+	 * @param storageClientService
 	 * @param providerSender
 	 */
 	@Inject
-	public ProviderReceiverMock(
-			QueuePublisherServiceFactory queuePublisherServiceFactory,
-			StorageClientServiceFactory storageClientServiceFactory,
+	public ProviderReceiverMock(SourceAccountProvider sap,
+			StorageClientService storageClientService,
 			ProviderSender providerSender) {
-		this.queuePublisherServiceFactory = queuePublisherServiceFactory;
-		this.storageClientServiceFactory = storageClientServiceFactory;
+		this.sap = sap;
+		this.storageClientService = storageClientService;
 		this.providerSender = providerSender;
 	}
 
@@ -87,11 +88,20 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the approval.");
 
+			// retrieve the source account from the provider.
+			Account sourceAccount = sap.get();
+
+			log.debug("Initialize the storage client service.");
+			storageClientService.setPublicKey(sourceAccount.getPublicKey());
+			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+			storageClientService.setStorageBucket(sourceAccount
+					.getStorageBucket());
+
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = super.downloadLatestAssetTaskVersion(event
-					.getTargetAccountId(), event.getAssetTaskId(),
-					"./files/received/");
+			String downloadPath = storageClientService
+					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+							"./files/received/");
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
@@ -142,19 +152,26 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the rejection.");
 
+			// retrieve the source account from the provider.
+			Account sourceAccount = sap.get();
+
+			log.debug("Initialize the storage client service.");
+			storageClientService.setPublicKey(sourceAccount.getPublicKey());
+			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+			storageClientService.setStorageBucket(sourceAccount
+					.getStorageBucket());
+
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = super.downloadLatestAssetTaskVersion(event
-					.getTargetAccountId(), event.getAssetTaskId(),
-					"./files/received/");
+			String downloadPath = storageClientService
+					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+							"./files/received/");
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
 
 			log.debug("Submit the mock event.");
 			SubmitAssetTask event2 = new SubmitAssetTask();
-			event2.setSourceAccountId(PROVIDER_ACCOUNT_ID);
-			event2.setTargetAccountId(PLATFORM_ACCOUNT_ID);
 			event2.setAssetTaskId(event.getAssetTaskId());
 			event2.setNativeState("Mock State");
 
@@ -163,7 +180,6 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 			} catch (QueueServiceException e) {
 				log.error(e);
 			}
-
 		}
 
 	}
@@ -178,18 +194,24 @@ public class ProviderReceiverMock extends AbsEventClientImpl implements
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
+		// retrieve the source account from the provider.
+		Account sourceAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(sourceAccount.getPublicKey());
+		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+
 		log.debug("Download the latest asset task revision for: "
 				+ event.getAssetTaskId());
-		String downloadPath = super.downloadLatestAssetTaskVersion(event
-				.getTargetAccountId(), event.getAssetTaskId(),
-				"./files/received/");
+		String downloadPath = storageClientService
+				.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
+						"./files/received/");
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
 		log.debug("Submit the mock event.");
 		SubmitAssetTask event2 = new SubmitAssetTask();
-		event2.setSourceAccountId(PROVIDER_ACCOUNT_ID);
-		event2.setTargetAccountId(PLATFORM_ACCOUNT_ID);
 		event2.setAssetTaskId(event.getAssetTaskId());
 		event2.setNativeState("Mock State");
 

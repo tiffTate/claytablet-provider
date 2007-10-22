@@ -48,7 +48,7 @@ import com.google.inject.ImplementedBy;
  * @see StartAssetTask
  */
 @ImplementedBy(ProviderReceiverImpl.class)
-public interface ProviderReceiver extends AbsEventClient {
+public interface ProviderReceiver {
 
 	/**
 	 * Receives an approved asset task event.

@@ -1,10 +1,16 @@
 package com.claytablet.service.event.impl;
 
-import com.claytablet.factory.QueuePublisherServiceFactory;
-import com.claytablet.factory.StorageClientServiceFactory;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.claytablet.model.event.AbsEvent;
+import com.claytablet.model.event.Account;
 import com.claytablet.model.event.provider.AcceptAssetTask;
 import com.claytablet.model.event.provider.SubmitAssetTask;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
+import com.claytablet.provider.SourceAccountProvider;
+import com.claytablet.provider.TargetAccountProvider;
+import com.claytablet.queue.model.Message;
 import com.claytablet.queue.service.QueuePublisherService;
 import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
@@ -37,31 +43,48 @@ import com.google.inject.Singleton;
  * <p>
  * This is the default implementation for the provider sender.
  * 
- * @see AbsEventClientImpl
+ * @see ProviderSender
+ * @see SourceAccountProvider
+ * @see TargetAccountProvider
  * @see QueuePublisherService
  * @see StorageClientService
+ * @see AcceptAssetTask
+ * @see SubmitAssetTask
+ * @see UpdateAssetTaskState
+ * @see AbsEvent
  */
 @Singleton
-public class ProviderSenderImpl extends AbsEventClientImpl implements
-		ProviderSender {
+public class ProviderSenderImpl implements ProviderSender {
+
+	private final Log log = LogFactory.getLog(getClass());
+
+	private SourceAccountProvider sap;
+
+	private TargetAccountProvider tap;
+
+	private QueuePublisherService queuePublisherService;
+
+	private StorageClientService storageClientService;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param queuePublisherServiceFactory
-	 * @param storageClientServiceFactory
+	 * @param sap
+	 * @param tap
+	 * @param queuePublisherService
+	 * @param storageClientService
 	 */
 	@Inject
-	public ProviderSenderImpl(
-			QueuePublisherServiceFactory queuePublisherServiceFactory,
-			StorageClientServiceFactory storageClientServiceFactory) {
-		this.queuePublisherServiceFactory = queuePublisherServiceFactory;
-		this.storageClientServiceFactory = storageClientServiceFactory;
-	}
+	public ProviderSenderImpl(SourceAccountProvider sap,
+			TargetAccountProvider tap,
+			QueuePublisherService queuePublisherService,
+			StorageClientService storageClientService) {
 
-	// -------------------------------------------------------------------------
-	// Event methods
-	// -------------------------------------------------------------------------
+		this.sap = sap;
+		this.tap = tap;
+		this.queuePublisherService = queuePublisherService;
+		this.storageClientService = storageClientService;
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -78,7 +101,7 @@ public class ProviderSenderImpl extends AbsEventClientImpl implements
 		}
 
 		// send the event
-		super.sendEvent(event);
+		sendEvent((AbsEvent) event);
 	}
 
 	/*
@@ -107,12 +130,20 @@ public class ProviderSenderImpl extends AbsEventClientImpl implements
 		String fileExt = sourceFilePath.substring(sourceFilePath
 				.lastIndexOf(".") + 1, sourceFilePath.length());
 
+		// retrieve the client account from the provider.
+		Account clientAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(clientAccount.getPublicKey());
+		storageClientService.setPrivateKey(clientAccount.getPrivateKey());
+		storageClientService.setStorageBucket(clientAccount.getStorageBucket());
+
 		log.debug("Upload the asset task version file.");
-		uploadAssetTaskVersion(event.getSourceAccountId(), event
-				.getAssetTaskId(), fileExt, sourceFilePath);
+		storageClientService.uploadAssetTaskVersion(event.getAssetTaskId(),
+				fileExt, sourceFilePath);
 
 		// send the event
-		super.sendEvent(event);
+		sendEvent((AbsEvent) event);
 	}
 
 	/*
@@ -130,7 +161,47 @@ public class ProviderSenderImpl extends AbsEventClientImpl implements
 		}
 
 		// send the event
-		super.sendEvent(event);
+		sendEvent((AbsEvent) event);
+	}
+
+	/**
+	 * Sends an event to the queue.
+	 * 
+	 * @param event
+	 *            Required parameter that specifies the event to send.
+	 * @throws EventServiceException
+	 * @throws QueueServiceException
+	 */
+	private void sendEvent(AbsEvent event) throws EventServiceException,
+			QueueServiceException {
+
+		log
+				.debug("Retrieve the source and target accounts from the providers.");
+		Account sourceAccount = sap.get();
+		Account targetAccount = tap.get();
+
+		log
+				.debug("Populate the source and target account identifiers in the event.");
+		event.setSourceAccountId(sourceAccount.getId());
+		event.setTargetAccountId(targetAccount.getId());
+
+		log.debug("Run event field validation.");
+		String validate = event.validate();
+		if (validate != null) {
+			throw new EventServiceException(validate);
+		}
+
+		log.debug("Serialize the event to a new message object.");
+		Message message = new Message(null, AbsEvent.toXml(event));
+
+		log.debug("Initialize the queue publisher.");
+		queuePublisherService.setPublicKey(sourceAccount.getPublicKey());
+		queuePublisherService.setPrivateKey(sourceAccount.getPrivateKey());
+		queuePublisherService.setEndpoint(targetAccount.getQueueEndpoint());
+
+		log.debug("Send the event message.");
+		queuePublisherService.sendMessage(message);
+
 	}
 
 }
