@@ -5,8 +5,6 @@ import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
-import com.claytablet.model.event.producer.ApproveAssetTask;
-import com.claytablet.model.event.producer.RejectAssetTask;
 import com.claytablet.service.event.impl.ProviderReceiverImpl;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.ImplementedBy;
@@ -41,10 +39,10 @@ import com.google.inject.ImplementedBy;
  * 
  * <p>
  * @see ProviderReceiverImpl
- * @see ApproveAssetTask
- * @see CancelAssetTask
+ * @see ApprovedAssetTask
+ * @see CanceledAssetTask
  * @see ProcessingError
- * @see RejectAssetTask
+ * @see RejectedAssetTask
  * @see StartAssetTask
  */
 @ImplementedBy(ProviderReceiverImpl.class)

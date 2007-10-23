@@ -62,9 +62,9 @@ public class ProviderEventListenerImpl implements EventListener {
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param queueSubscriberServiceFactory
-	 * @param platformReceiver
-	 * @param platformSender
+	 * @param sap
+	 * @param queueSubscriberService
+	 * @param providerReceiver
 	 */
 	@Inject
 	public ProviderEventListenerImpl(SourceAccountProvider sap,
