@@ -5,6 +5,7 @@ import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
+import com.claytablet.model.event.platform.StartSupportAsset;
 import com.claytablet.service.event.impl.ProviderReceiverImpl;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.ImplementedBy;
@@ -122,6 +123,20 @@ public interface ProviderReceiver {
 	 * @throws EventServiceException
 	 */
 	public void receiveEvent(StartAssetTask event)
+			throws StorageServiceException, EventServiceException;
+
+	/**
+	 * Receives a start support asset event.
+	 * 
+	 * <p>
+	 * This is how providers are notified of new support assets.
+	 * 
+	 * @param event
+	 *            The event to process.
+	 * @throws StorageServiceException
+	 * @throws EventServiceException
+	 */
+	public void receiveEvent(StartSupportAsset event)
 			throws StorageServiceException, EventServiceException;
 
 }
