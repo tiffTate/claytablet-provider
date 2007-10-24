@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
+import com.claytablet.model.event.platform.CanceledSupportAsset;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
@@ -121,6 +122,21 @@ public class ProviderReceiverMock implements ProviderReceiver {
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
 		// do nothing
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.claytablet.service.event.ProviderReceiver#receiveEvent(com.claytablet.model.event.platform.CanceledSupportAsset)
+	 */
+	public void receiveEvent(CanceledSupportAsset event) {
+
+		log.debug(event.getClass().getSimpleName() + " event received.");
+
+		// TODO - provider integration code goes here.
+
+		// If an exception is thrown the event will remain on the queue.
 
 	}
 
