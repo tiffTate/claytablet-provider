@@ -117,14 +117,6 @@ public class ProviderEventListenerImpl implements EventListener {
 				} catch (Exception e) {
 					log.error(e.getMessage());
 				}
-
-				log.debug("Sleep for 5 seconds.");
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 			}
 
 		}

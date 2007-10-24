@@ -94,12 +94,6 @@ public class ProviderSenderImpl implements ProviderSender {
 	public void sendEvent(AcceptAssetTask event) throws EventServiceException,
 			QueueServiceException {
 
-		log.debug("Run event field validation.");
-		String validate = event.validate();
-		if (validate != null) {
-			throw new EventServiceException(validate);
-		}
-
 		// send the event
 		sendEvent((AbsEvent) event);
 	}
@@ -113,12 +107,6 @@ public class ProviderSenderImpl implements ProviderSender {
 	public void sendEvent(SubmitAssetTask event, String sourceFilePath)
 			throws EventServiceException, StorageServiceException,
 			QueueServiceException {
-
-		log.debug("Run event field validation.");
-		String validate = event.validate();
-		if (validate != null) {
-			throw new EventServiceException(validate);
-		}
 
 		log.debug("Check to make sure a file path has been specified.");
 		if (sourceFilePath == null || sourceFilePath.length() == 0) {
@@ -153,12 +141,6 @@ public class ProviderSenderImpl implements ProviderSender {
 	 */
 	public void sendEvent(UpdateAssetTaskState event)
 			throws EventServiceException, QueueServiceException {
-
-		log.debug("Run event field validation.");
-		String validate = event.validate();
-		if (validate != null) {
-			throw new EventServiceException(validate);
-		}
 
 		// send the event
 		sendEvent((AbsEvent) event);
