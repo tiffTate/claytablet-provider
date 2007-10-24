@@ -9,6 +9,7 @@ import com.claytablet.model.event.platform.CanceledAssetTask;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
+import com.claytablet.model.event.platform.StartSupportAsset;
 import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
@@ -209,6 +210,40 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 
 		// TODO - provider integration code goes here.
 		// I.e. send the asset to the TMS and mark it as pending.
+
+		// I.e. call an external system method called new document
+
+		// If an exception is thrown the event will remain on the queue.
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.claytablet.service.event.ProviderReceiver#receiveEvent(com.claytablet.model.event.platform.StartSupportAsset)
+	 */
+	public void receiveEvent(StartSupportAsset event)
+			throws StorageServiceException, EventServiceException {
+
+		log.debug(event.getClass().getSimpleName() + " event received.");
+
+		// retrieve the source account from the provider.
+		Account sourceAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(sourceAccount.getPublicKey());
+		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+
+		log.debug("Download the support asset for: "
+				+ event.getSupportAssetId());
+		String downloadPath = storageClientService.downloadSupportAsset(event
+				.getSupportAssetId(), event.getFileExt(), "./files/received/");
+
+		log.debug("Downloaded a support asset file to: " + downloadPath);
+
+		// TODO - provider integration code goes here.
+		// I.e. send the support asset to the TMS.
 
 		// I.e. call an external system method called new document
 
