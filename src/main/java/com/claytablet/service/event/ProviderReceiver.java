@@ -2,6 +2,7 @@ package com.claytablet.service.event;
 
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
+import com.claytablet.model.event.platform.CanceledSupportAsset;
 import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
@@ -77,6 +78,17 @@ public interface ProviderReceiver {
 	 *            The event to process.
 	 */
 	public void receiveEvent(CanceledAssetTask event);
+
+	/**
+	 * Receives a cancel support asset event.
+	 * 
+	 * <p>
+	 * This is how providers are notified of cancelled support assets.
+	 * 
+	 * @param event
+	 *            The event to process.
+	 */
+	public void receiveEvent(CanceledSupportAsset event);
 
 	/**
 	 * Receives a processing error event.
