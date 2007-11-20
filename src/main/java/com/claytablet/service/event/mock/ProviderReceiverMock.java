@@ -1,5 +1,9 @@
 package com.claytablet.service.event.mock;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -187,9 +191,18 @@ public class ProviderReceiverMock implements ProviderReceiver {
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
 
-			// TODO - if it's a text file, convert all of the text to lower case
+			// If it's a text file, convert all of the text to lower case
 			if (event.getFileExt().equals("txt")) {
 				log.debug("Convert all of the text to lower case.");
+				try {
+					String contents = FileUtils.readFileToString(new File(
+							downloadPath));
+					contents = contents.toLowerCase();
+					FileUtils.writeStringToFile(new File(downloadPath),
+							contents);
+				} catch (IOException e) {
+					log.error(e);
+				}
 			}
 
 			log.debug("Submit the mock event.");
@@ -232,9 +245,17 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
-		// TODO - if it's a text file, convert all of the text to upper case
+		// If it's a text file, convert all of the text to upper case
 		if (event.getFileExt().equals("txt")) {
 			log.debug("Convert all of the text to upper case.");
+			try {
+				String contents = FileUtils.readFileToString(new File(
+						downloadPath));
+				contents = contents.toUpperCase();
+				FileUtils.writeStringToFile(new File(downloadPath), contents);
+			} catch (IOException e) {
+				log.error(e);
+			}
 		}
 
 		log.debug("Submit the mock event.");
