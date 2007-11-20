@@ -187,6 +187,11 @@ public class ProviderReceiverMock implements ProviderReceiver {
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
 
+			// TODO - if it's a text file, convert all of the text to lower case
+			if (event.getFileExt().equals("txt")) {
+				log.debug("Convert all of the text to lower case.");
+			}
+
 			log.debug("Submit the mock event.");
 			SubmitAssetTask event2 = new SubmitAssetTask();
 			event2.setAssetTaskId(event.getAssetTaskId());
@@ -227,6 +232,11 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
+		// TODO - if it's a text file, convert all of the text to upper case
+		if (event.getFileExt().equals("txt")) {
+			log.debug("Convert all of the text to upper case.");
+		}
+
 		log.debug("Submit the mock event.");
 		SubmitAssetTask event2 = new SubmitAssetTask();
 		event2.setAssetTaskId(event.getAssetTaskId());
@@ -264,13 +274,6 @@ public class ProviderReceiverMock implements ProviderReceiver {
 				.getSupportAssetId(), event.getFileExt(), "./files/received/");
 
 		log.debug("Downloaded a support asset file to: " + downloadPath);
-
-		// TODO - provider integration code goes here.
-		// I.e. send the support asset to the TMS.
-
-		// I.e. call an external system method called new document
-
-		// If an exception is thrown the event will remain on the queue.
 
 	}
 
