@@ -94,14 +94,8 @@ public class ProviderReceiverMock implements ProviderReceiver {
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the approval.");
 
-			// retrieve the source account from the provider.
-			Account sourceAccount = sap.get();
-
-			log.debug("Initialize the storage client service.");
-			storageClientService.setPublicKey(sourceAccount.getPublicKey());
-			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
-			storageClientService.setStorageBucket(sourceAccount
-					.getStorageBucket());
+			// initialize the storage client for the source account.
+			initStorageClient();
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
@@ -173,14 +167,8 @@ public class ProviderReceiverMock implements ProviderReceiver {
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the rejection.");
 
-			// retrieve the source account from the provider.
-			Account sourceAccount = sap.get();
-
-			log.debug("Initialize the storage client service.");
-			storageClientService.setPublicKey(sourceAccount.getPublicKey());
-			storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
-			storageClientService.setStorageBucket(sourceAccount
-					.getStorageBucket());
+			// initialize the storage client for the source account.
+			initStorageClient();
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
@@ -229,13 +217,8 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// retrieve the source account from the provider.
-		Account sourceAccount = sap.get();
-
-		log.debug("Initialize the storage client service.");
-		storageClientService.setPublicKey(sourceAccount.getPublicKey());
-		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
-		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+		// initialize the storage client for the source account.
+		initStorageClient();
 
 		log.debug("Download the latest asset task revision for: "
 				+ event.getAssetTaskId());
@@ -281,13 +264,8 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// retrieve the source account from the provider.
-		Account sourceAccount = sap.get();
-
-		log.debug("Initialize the storage client service.");
-		storageClientService.setPublicKey(sourceAccount.getPublicKey());
-		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
-		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+		// initialize the storage client for the source account.
+		initStorageClient();
 
 		log.debug("Download the support asset for: "
 				+ event.getSupportAssetId());
@@ -296,6 +274,25 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 		log.debug("Downloaded a support asset file to: " + downloadPath);
 
+	}
+
+	/**
+	 * Initializes the storage client with the source account values
+	 * (credentials and defaults).
+	 */
+	private void initStorageClient() {
+
+		log.debug("Retrieve the source account from the provider.");
+		Account sourceAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(sourceAccount.getPublicKey());
+		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+		storageClientService.setDefaultLocalSourceDirectory(sourceAccount
+				.getLocalSourceDirectory());
+		storageClientService.setDefaultLocalTargetDirectory(sourceAccount
+				.getLocalTargetDirectory());
 	}
 
 }
