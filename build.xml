@@ -86,7 +86,19 @@
 			</fileset>
 		</copy>
 
+		<copy todir="../provider-impl/provider-idiom/lib">
+			<fileset dir="${dist.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
 		<copy todir="../provider-impl/provider-lang-weaver/lib">
+			<fileset dir="${dist.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
+		<copy todir="../provider-impl/provider-sdl/lib">
 			<fileset dir="${dist.dir}">
 				<include name="**/*.jar" />
 			</fileset>
