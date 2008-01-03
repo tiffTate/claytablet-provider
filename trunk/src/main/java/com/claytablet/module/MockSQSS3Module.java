@@ -2,8 +2,10 @@ package com.claytablet.module;
 
 import com.claytablet.service.event.EventListener;
 import com.claytablet.service.event.ProviderReceiver;
+import com.claytablet.service.event.ProviderStatePoller;
 import com.claytablet.service.event.impl.ProviderEventListenerImpl;
 import com.claytablet.service.event.mock.ProviderReceiverMock;
+import com.claytablet.service.event.mock.ProviderStatePollerMock;
 
 /**
  * Copyright 2007 Clay Tablet Technologies Inc.
@@ -40,6 +42,9 @@ public class MockSQSS3Module extends SQSS3Module {
 
 		// override the default receiver binding
 		bind(ProviderReceiver.class).to(ProviderReceiverMock.class);
+
+		// override the default poller binding
+		bind(ProviderStatePoller.class).to(ProviderStatePollerMock.class);
 
 	}
 }
