@@ -80,6 +80,12 @@
 			</fileset>
 		</copy>
 
+		<copy todir="../provider-impl/provider-freeway/lib">
+			<fileset dir="${dist.dir}">
+				<include name="**/*.jar" />
+			</fileset>
+		</copy>
+
 		<copy todir="../provider-impl/provider-lang-weaver/lib">
 			<fileset dir="${dist.dir}">
 				<include name="**/*.jar" />
