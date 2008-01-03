@@ -118,13 +118,8 @@ public class ProviderSenderImpl implements ProviderSender {
 		String fileExt = sourceFilePath.substring(sourceFilePath
 				.lastIndexOf(".") + 1, sourceFilePath.length());
 
-		// retrieve the client account from the provider.
-		Account clientAccount = sap.get();
-
-		log.debug("Initialize the storage client service.");
-		storageClientService.setPublicKey(clientAccount.getPublicKey());
-		storageClientService.setPrivateKey(clientAccount.getPrivateKey());
-		storageClientService.setStorageBucket(clientAccount.getStorageBucket());
+		// initialize the storage client for the source account.
+		initStorageClient();
 
 		log.debug("Upload the asset task version file.");
 		storageClientService.uploadAssetTaskVersion(event.getAssetTaskId(),
@@ -184,6 +179,25 @@ public class ProviderSenderImpl implements ProviderSender {
 		log.debug("Send the event message.");
 		queuePublisherService.sendMessage(message);
 
+	}
+
+	/**
+	 * Initializes the storage client with the source account values
+	 * (credentials and defaults).
+	 */
+	private void initStorageClient() {
+
+		log.debug("Retrieve the source account from the provider.");
+		Account sourceAccount = sap.get();
+
+		log.debug("Initialize the storage client service.");
+		storageClientService.setPublicKey(sourceAccount.getPublicKey());
+		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
+		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
+		storageClientService.setDefaultLocalSourceDirectory(sourceAccount
+				.getLocalSourceDirectory());
+		storageClientService.setDefaultLocalTargetDirectory(sourceAccount
+				.getLocalTargetDirectory());
 	}
 
 }
