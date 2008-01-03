@@ -41,7 +41,7 @@ public class ProviderEventCron {
 	private static final Log log = LogFactory.getLog(ProviderEventCron.class);
 
 	// the inteval to sleep for in seconds (300 = 5 minutes)
-	private static final int SLEEP_INTERVAL = 10;
+	private static final int SLEEP_INTERVAL = 5;
 
 	// the maximum number of messages to retrieve and process per interval. 0
 	// indicates no limit (all messages available)
