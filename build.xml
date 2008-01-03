@@ -7,7 +7,6 @@
 	<property name="proj.version" value="1.0" />
 
 	<property name="lib.dir" value="lib" />
-	<property name="api.classes.dir" value="../api/target/classes" />
 	<property name="src.main.dir" value="src/main/java" />
 	<property name="src.main.resources.dir" value="src/main/resources" />
 	<property name="src.test.dir" value="src/test/java" />
@@ -24,7 +23,6 @@
 		<fileset dir="${lib.dir}">
 			<include name="**/*.jar" />
 		</fileset>
-		<pathelement path="${api.classes.dir}" />
 	</path>
 
 	<target name="clean" description="Clean output dir">
