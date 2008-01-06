@@ -6,6 +6,7 @@ import org.apache.commons.logging.LogFactory;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
+import com.claytablet.service.event.mock.stub.MockStub;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -43,14 +44,19 @@ public class ProviderStatePollerMock implements ProviderStatePoller {
 
 	private ProviderSender providerSender;
 
+	private MockStub mockStub;
+
 	/**
 	 * Constructor for dependency injection.
 	 * 
 	 * @param providerSender
+	 * @param mockStub;
 	 */
 	@Inject
-	public ProviderStatePollerMock(ProviderSender providerSender) {
+	public ProviderStatePollerMock(ProviderSender providerSender,
+			MockStub mockStub) {
 		this.providerSender = providerSender;
+		this.mockStub = mockStub;
 	}
 
 	/*
