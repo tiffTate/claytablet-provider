@@ -3,6 +3,7 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.LanguageMap;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
@@ -11,6 +12,7 @@ import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.platform.StartSupportAsset;
+import com.claytablet.provider.LanguageMapProvider;
 import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
@@ -58,18 +60,22 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 
 	private SourceAccountProvider sap;
 
+	private LanguageMapProvider lmp;
+
 	private StorageClientService storageClientService;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
 	 * @param sap
+	 * @param lmp
 	 * @param storageClientService
 	 */
 	@Inject
 	public ProviderReceiverImpl(SourceAccountProvider sap,
-			StorageClientService storageClientService) {
+			LanguageMapProvider lmp, StorageClientService storageClientService) {
 		this.sap = sap;
+		this.lmp = lmp;
 		this.storageClientService = storageClientService;
 	}
 
@@ -206,6 +212,16 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 						"./files/received/");
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
+
+		// provides language code mappings between the clay tablet platform and
+		// the connecting system. Behavior is the same as a Hashtable. Use
+		// get(key) to retrieve the mapping, where key is the clay tablet
+		// platform language code.
+		LanguageMap languageMap = lmp.get();
+		if (languageMap == null) {
+			log
+					.debug("No mappings for provider. Mappings must be specified in ./accounts/languageMap.xml");
+		}
 
 		// TODO - provider integration code goes here.
 		// I.e. send the asset to the TMS and mark it as pending.
