@@ -3,7 +3,9 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.LanguageMap;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
+import com.claytablet.provider.LanguageMapProvider;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
 import com.google.inject.Inject;
@@ -41,15 +43,20 @@ public class ProviderStatePollerImpl implements ProviderStatePoller {
 
 	private final Log log = LogFactory.getLog(getClass());
 
+	private LanguageMapProvider lmp;
+
 	private ProviderSender providerSender;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
+	 * @param lmp
 	 * @param providerSender
 	 */
 	@Inject
-	public ProviderStatePollerImpl(ProviderSender providerSender) {
+	public ProviderStatePollerImpl(LanguageMapProvider lmp,
+			ProviderSender providerSender) {
+		this.lmp = lmp;
 		this.providerSender = providerSender;
 	}
 
@@ -66,11 +73,25 @@ public class ProviderStatePollerImpl implements ProviderStatePoller {
 		// for every important change put together an UpdateAssetTaskState
 		// object and call
 		// providerSender.sendEvent(UpdateAssetTaskState event)
+
 		UpdateAssetTaskState event = new UpdateAssetTaskState();
 		event.setAssetTaskId("mock-id");
 		event.setNativeState("mock-tms-state");
 		event.setNotes("mock-notes");
 		providerSender.sendEvent(event);
+
+		// Once an asset task has been translated, the SubmitAsset event should
+		// be created.
+
+		// Provides language code mappings between the clay tablet platform and
+		// the connecting system. Behavior is the same as a Hashtable. Use
+		// get(key) to retrieve the mapping, where key is the clay tablet
+		// platform language code.
+		LanguageMap languageMap = lmp.get();
+		if (languageMap == null) {
+			log
+					.debug("No mappings for provider. Mappings must be specified in ./accounts/languageMap.xml");
+		}
 
 	}
 
