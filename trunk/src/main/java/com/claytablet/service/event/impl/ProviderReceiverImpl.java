@@ -213,7 +213,7 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
-		// provides language code mappings between the clay tablet platform and
+		// Provides language code mappings between the clay tablet platform and
 		// the connecting system. Behavior is the same as a Hashtable. Use
 		// get(key) to retrieve the mapping, where key is the clay tablet
 		// platform language code.
