@@ -21,6 +21,7 @@ import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.service.event.ProviderSender;
+import com.claytablet.service.event.mock.stub.MockStub;
 import com.claytablet.storage.service.StorageClientService;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.Inject;
@@ -64,20 +65,24 @@ public class ProviderReceiverMock implements ProviderReceiver {
 	// we're going to automatically respond to messages
 	private ProviderSender providerSender;
 
+	private MockStub mockStub;
+
 	/**
 	 * Constructor for dependency injection.
 	 * 
 	 * @param sap
 	 * @param storageClientService
 	 * @param providerSender
+	 * @param mockStub
 	 */
 	@Inject
 	public ProviderReceiverMock(SourceAccountProvider sap,
 			StorageClientService storageClientService,
-			ProviderSender providerSender) {
+			ProviderSender providerSender, MockStub mockStub) {
 		this.sap = sap;
 		this.storageClientService = storageClientService;
 		this.providerSender = providerSender;
+		this.mockStub = mockStub;
 	}
 
 	/*
