@@ -62,7 +62,7 @@ public class ProjectMap {
 
 	private final SourceAccountProvider sap;
 
-	private Hashtable<String, ProjectMapping> projectMapping;
+	private Hashtable<String, ProjectMapping> projectMappings = new Hashtable<String, ProjectMapping>();
 
 	/**
 	 * Constructor for dependency injection.
@@ -82,7 +82,7 @@ public class ProjectMap {
 	public void load() throws IOException {
 
 		// check if we've already loaded the mappings.
-		if (this.projectMapping == null || this.projectMapping.size() == 0) {
+		if (this.projectMappings == null || this.projectMappings.size() == 0) {
 			// nothing loaded, call refresh to pull the mappings from disk.
 			refresh();
 		}
@@ -93,6 +93,7 @@ public class ProjectMap {
 	 * 
 	 * @throws IOException
 	 */
+	@SuppressWarnings("unchecked")
 	public void refresh() throws IOException {
 
 		// retrieve the source account so we can get the xml data directory
@@ -106,7 +107,7 @@ public class ProjectMap {
 
 		// clear the existing hashtable and load in the new one
 		this.clear();
-		this.projectMapping = ((ProjectMap) getXStream().fromXML(xml)).projectMapping;
+		this.projectMappings = (Hashtable) getXStream().fromXML(xml);
 	}
 
 	/**
@@ -121,7 +122,7 @@ public class ProjectMap {
 		log.debug("Save the project map to: " + path);
 
 		// serialize the object to an xml string
-		String xml = getXStream().toXML(this);
+		String xml = getXStream().toXML(this.projectMappings);
 
 		// save the string to disk
 		FileUtils.writeStringToFile(new File(path), xml);
@@ -136,7 +137,9 @@ public class ProjectMap {
 	private XStream getXStream() {
 
 		XStream xstream = new XStream();
-		xstream.alias("ProjectMap", ProjectMap.class);
+		xstream.alias("ProjectMap", Hashtable.class);
+		xstream.alias("ProjectMapping", ProjectMapping.class);
+
 		return xstream;
 	}
 
@@ -145,7 +148,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#clear()
 	 */
 	public void clear() {
-		projectMapping.clear();
+		projectMappings.clear();
 	}
 
 	/**
@@ -153,7 +156,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#clone()
 	 */
 	public Object clone() {
-		return projectMapping.clone();
+		return projectMappings.clone();
 	}
 
 	/**
@@ -162,7 +165,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#contains(java.lang.Object)
 	 */
 	public boolean contains(ProjectMapping value) {
-		return projectMapping.contains(value);
+		return projectMappings.contains(value);
 	}
 
 	/**
@@ -171,7 +174,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#containsKey(java.lang.Object)
 	 */
 	public boolean containsKey(String key) {
-		return projectMapping.containsKey(key);
+		return projectMappings.containsKey(key);
 	}
 
 	/**
@@ -180,7 +183,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#containsValue(java.lang.Object)
 	 */
 	public boolean containsValue(ProjectMapping value) {
-		return projectMapping.containsValue(value);
+		return projectMappings.containsValue(value);
 	}
 
 	/**
@@ -188,7 +191,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#elements()
 	 */
 	public Enumeration<ProjectMapping> elements() {
-		return projectMapping.elements();
+		return projectMappings.elements();
 	}
 
 	/**
@@ -196,7 +199,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#entrySet()
 	 */
 	public Set<Entry<String, ProjectMapping>> entrySet() {
-		return projectMapping.entrySet();
+		return projectMappings.entrySet();
 	}
 
 	/**
@@ -205,7 +208,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#equals(java.lang.Object)
 	 */
 	public boolean equals(Object o) {
-		return projectMapping.equals(o);
+		return projectMappings.equals(o);
 	}
 
 	/**
@@ -214,7 +217,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#get(java.lang.Object)
 	 */
 	public ProjectMapping get(String key) {
-		return projectMapping.get(key);
+		return projectMappings.get(key);
 	}
 
 	/**
@@ -222,7 +225,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#hashCode()
 	 */
 	public int hashCode() {
-		return projectMapping.hashCode();
+		return projectMappings.hashCode();
 	}
 
 	/**
@@ -230,7 +233,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#isEmpty()
 	 */
 	public boolean isEmpty() {
-		return projectMapping.isEmpty();
+		return projectMappings.isEmpty();
 	}
 
 	/**
@@ -238,7 +241,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#keys()
 	 */
 	public Enumeration<String> keys() {
-		return projectMapping.keys();
+		return projectMappings.keys();
 	}
 
 	/**
@@ -246,7 +249,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#keySet()
 	 */
 	public Set<String> keySet() {
-		return projectMapping.keySet();
+		return projectMappings.keySet();
 	}
 
 	/**
@@ -256,7 +259,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#put(java.lang.Object, java.lang.Object)
 	 */
 	public ProjectMapping put(String key, ProjectMapping value) {
-		return projectMapping.put(key, value);
+		return projectMappings.put(key, value);
 	}
 
 	/**
@@ -264,7 +267,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#putAll(java.util.Map)
 	 */
 	public void putAll(Map<? extends String, ? extends ProjectMapping> t) {
-		projectMapping.putAll(t);
+		projectMappings.putAll(t);
 	}
 
 	/**
@@ -273,7 +276,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#remove(java.lang.Object)
 	 */
 	public ProjectMapping remove(String key) {
-		return projectMapping.remove(key);
+		return projectMappings.remove(key);
 	}
 
 	/**
@@ -281,7 +284,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#size()
 	 */
 	public int size() {
-		return projectMapping.size();
+		return projectMappings.size();
 	}
 
 	/**
@@ -289,7 +292,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#toString()
 	 */
 	public String toString() {
-		return projectMapping.toString();
+		return projectMappings.toString();
 	}
 
 	/**
@@ -297,7 +300,7 @@ public class ProjectMap {
 	 * @see java.util.Hashtable#values()
 	 */
 	public Collection<ProjectMapping> values() {
-		return projectMapping.values();
+		return projectMappings.values();
 	}
 
 }
