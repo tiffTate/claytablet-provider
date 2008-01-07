@@ -13,7 +13,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.claytablet.provider.SourceAccountProvider;
 import com.google.inject.Inject;
 import com.thoughtworks.xstream.XStream;
 
@@ -60,18 +59,18 @@ public class ProjectMap {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private final SourceAccountProvider sap;
+	private final ConnectionContext context;
 
 	private Hashtable<String, ProjectMapping> projectMappings = new Hashtable<String, ProjectMapping>();
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param sap
+	 * @param context
 	 */
 	@Inject
-	public ProjectMap(final SourceAccountProvider sap) {
-		this.sap = sap;
+	public ProjectMap(final ConnectionContext context) {
+		this.context = context;
 	}
 
 	/**
@@ -98,7 +97,7 @@ public class ProjectMap {
 
 		// retrieve the source account so we can get the xml data directory
 		// where the mappings are stored.
-		String path = sap.get().getXmlDataDirectory() + "projectMap.xml";
+		String path = context.getXmlDataDirectory() + "projectMap.xml";
 
 		log.debug("Refresh the project map from: " + path);
 
@@ -117,7 +116,7 @@ public class ProjectMap {
 	 */
 	public void save() throws IOException {
 
-		String path = sap.get().getXmlDataDirectory() + "projectMap.xml";
+		String path = context.getXmlDataDirectory() + "projectMap.xml";
 
 		log.debug("Save the project map to: " + path);
 
