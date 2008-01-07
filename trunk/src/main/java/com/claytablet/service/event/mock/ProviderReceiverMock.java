@@ -7,6 +7,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
@@ -58,27 +59,33 @@ public class ProviderReceiverMock implements ProviderReceiver {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private SourceAccountProvider sap;
+	private final ConnectionContext context;
 
-	private StorageClientService storageClientService;
+	private final SourceAccountProvider sap;
 
 	// we're going to automatically respond to messages
-	private ProviderSender providerSender;
+	private final ProviderSender providerSender;
 
-	private MockStub mockStub;
+	private final MockStub mockStub;
+
+	private StorageClientService storageClientService;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
+	 * @param context
 	 * @param sap
 	 * @param storageClientService
 	 * @param providerSender
 	 * @param mockStub
 	 */
 	@Inject
-	public ProviderReceiverMock(SourceAccountProvider sap,
-			StorageClientService storageClientService,
-			ProviderSender providerSender, MockStub mockStub) {
+	public ProviderReceiverMock(final ConnectionContext context,
+			final SourceAccountProvider sap,
+			final ProviderSender providerSender, final MockStub mockStub,
+			StorageClientService storageClientService) {
+
+		this.context = context;
 		this.sap = sap;
 		this.storageClientService = storageClientService;
 		this.providerSender = providerSender;
@@ -294,10 +301,10 @@ public class ProviderReceiverMock implements ProviderReceiver {
 		storageClientService.setPublicKey(sourceAccount.getPublicKey());
 		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
 		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
-		storageClientService.setDefaultLocalSourceDirectory(sourceAccount
-				.getLocalSourceDirectory());
-		storageClientService.setDefaultLocalTargetDirectory(sourceAccount
-				.getLocalTargetDirectory());
+		storageClientService.setDefaultLocalSourceDirectory(context
+				.getSourceDirectory());
+		storageClientService.setDefaultLocalTargetDirectory(context
+				.getTargetDirectory());
 	}
 
 }

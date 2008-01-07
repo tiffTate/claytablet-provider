@@ -3,6 +3,7 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
@@ -56,19 +57,24 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private SourceAccountProvider sap;
+	private final ConnectionContext context;
+
+	private final SourceAccountProvider sap;
 
 	private StorageClientService storageClientService;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
+	 * @param context
 	 * @param sap
 	 * @param storageClientService
 	 */
 	@Inject
-	public ProviderReceiverImpl(SourceAccountProvider sap,
+	public ProviderReceiverImpl(final ConnectionContext context,
+			final SourceAccountProvider sap,
 			StorageClientService storageClientService) {
+		this.context = context;
 		this.sap = sap;
 		this.storageClientService = storageClientService;
 	}
@@ -258,9 +264,9 @@ public class ProviderReceiverImpl implements ProviderReceiver {
 		storageClientService.setPublicKey(sourceAccount.getPublicKey());
 		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
 		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
-		storageClientService.setDefaultLocalSourceDirectory(sourceAccount
-				.getLocalSourceDirectory());
-		storageClientService.setDefaultLocalTargetDirectory(sourceAccount
-				.getLocalTargetDirectory());
+		storageClientService.setDefaultLocalSourceDirectory(context
+				.getSourceDirectory());
+		storageClientService.setDefaultLocalTargetDirectory(context
+				.getTargetDirectory());
 	}
 }

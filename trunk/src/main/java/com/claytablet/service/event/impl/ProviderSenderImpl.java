@@ -3,6 +3,7 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.AbsEvent;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.provider.AcceptAssetTask;
@@ -58,9 +59,11 @@ public class ProviderSenderImpl implements ProviderSender {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private SourceAccountProvider sap;
+	private final ConnectionContext context;
 
-	private TargetAccountProvider tap;
+	private final SourceAccountProvider sap;
+
+	private final TargetAccountProvider tap;
 
 	private QueuePublisherService queuePublisherService;
 
@@ -69,17 +72,19 @@ public class ProviderSenderImpl implements ProviderSender {
 	/**
 	 * Constructor for dependency injection.
 	 * 
+	 * @param context
 	 * @param sap
 	 * @param tap
 	 * @param queuePublisherService
 	 * @param storageClientService
 	 */
 	@Inject
-	public ProviderSenderImpl(SourceAccountProvider sap,
-			TargetAccountProvider tap,
+	public ProviderSenderImpl(final ConnectionContext context,
+			final SourceAccountProvider sap, final TargetAccountProvider tap,
 			QueuePublisherService queuePublisherService,
 			StorageClientService storageClientService) {
 
+		this.context = context;
 		this.sap = sap;
 		this.tap = tap;
 		this.queuePublisherService = queuePublisherService;
@@ -194,10 +199,10 @@ public class ProviderSenderImpl implements ProviderSender {
 		storageClientService.setPublicKey(sourceAccount.getPublicKey());
 		storageClientService.setPrivateKey(sourceAccount.getPrivateKey());
 		storageClientService.setStorageBucket(sourceAccount.getStorageBucket());
-		storageClientService.setDefaultLocalSourceDirectory(sourceAccount
-				.getLocalSourceDirectory());
-		storageClientService.setDefaultLocalTargetDirectory(sourceAccount
-				.getLocalTargetDirectory());
+		storageClientService.setDefaultLocalSourceDirectory(context
+				.getSourceDirectory());
+		storageClientService.setDefaultLocalTargetDirectory(context
+				.getTargetDirectory());
 	}
 
 }
