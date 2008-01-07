@@ -43,6 +43,27 @@ public class ProjectMapping {
 	private String targetLanguageCode;
 
 	/**
+	 * Empty constructor.
+	 * 
+	 */
+	public ProjectMapping() {
+	}
+
+	/**
+	 * Value constructor.
+	 * 
+	 * @param cttProjectId
+	 * @param sourceLanguageCode
+	 * @param targetLanguageCode
+	 */
+	public ProjectMapping(String cttProjectId, String sourceLanguageCode,
+			String targetLanguageCode) {
+		this.cttProjectId = cttProjectId;
+		this.sourceLanguageCode = sourceLanguageCode;
+		this.targetLanguageCode = targetLanguageCode;
+	}
+
+	/**
 	 * @return the cttProjectId
 	 */
 	public String getCttProjectId() {
