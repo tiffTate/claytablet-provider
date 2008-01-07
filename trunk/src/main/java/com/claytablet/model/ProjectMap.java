@@ -13,6 +13,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.provider.SourceAccountProvider;
+import com.google.inject.Inject;
 import com.thoughtworks.xstream.XStream;
 
 /**
@@ -58,29 +60,51 @@ public class ProjectMap {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private final static String DEFAULT_PATH = "./conf/projectMap.xml";
+	private final SourceAccountProvider sap;
 
 	private Hashtable<String, ProjectMapping> projectMapping;
 
 	/**
+	 * Constructor for dependency injection.
+	 * 
+	 * @param sap
+	 */
+	@Inject
+	public ProjectMap(final SourceAccountProvider sap) {
+		this.sap = sap;
+	}
+
+	/**
 	 * Loads (deserializes) the project map from an xml file.
 	 * 
-	 * @param filePath
-	 *            Optional parameter specifying the path to load the project map
-	 *            xml file from. If not specified (null passed) a default will
-	 *            be used.
 	 * @throws IOException
 	 */
-	public void load(String filePath) throws IOException {
+	public void load() throws IOException {
 
-		if (filePath == null || filePath.trim().length() == 0) {
-			filePath = DEFAULT_PATH;
+		// check if we've already loaded the mappings.
+		if (this.projectMapping == null || this.projectMapping.size() == 0) {
+			// nothing loaded, call refresh to pull the mappings from disk.
+			refresh();
 		}
-		log.debug("Load the project map from: " + filePath);
+	}
 
-		// load the string from disk
-		String xml = FileUtils.readFileToString(new File(filePath));
+	/**
+	 * Loads (deserializes) the project map from an xml file.
+	 * 
+	 * @throws IOException
+	 */
+	public void refresh() throws IOException {
 
+		// retrieve the source account so we can get the xml data directory
+		// where the mappings are stored.
+		String path = sap.get().getXmlDataDirectory() + "projectMap.xml";
+
+		log.debug("Refresh the project map from: " + path);
+
+		// load the xml string from disk
+		String xml = FileUtils.readFileToString(new File(path));
+
+		// clear the existing hashtable and load in the new one
 		this.clear();
 		this.projectMapping = ((ProjectMap) getXStream().fromXML(xml)).projectMapping;
 	}
@@ -88,24 +112,19 @@ public class ProjectMap {
 	/**
 	 * Saves (serializes) the project map to an xml file.
 	 * 
-	 * @param filePath
-	 *            Optional parameter specifying the path to save the project map
-	 *            xml file from. If not specified (null passed) a default will
-	 *            be used.
 	 * @throws IOException
 	 */
-	public void save(String filePath) throws IOException {
+	public void save() throws IOException {
 
-		if (filePath == null || filePath.trim().length() == 0) {
-			filePath = DEFAULT_PATH;
-		}
-		log.debug("Save the project map to: " + filePath);
+		String path = sap.get().getXmlDataDirectory() + "projectMap.xml";
+
+		log.debug("Save the project map to: " + path);
 
 		// serialize the object to an xml string
 		String xml = getXStream().toXML(this);
 
 		// save the string to disk
-		FileUtils.writeStringToFile(new File(filePath), xml);
+		FileUtils.writeStringToFile(new File(path), xml);
 	}
 
 	/**
