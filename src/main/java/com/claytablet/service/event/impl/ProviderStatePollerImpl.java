@@ -3,6 +3,7 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
@@ -41,16 +42,20 @@ public class ProviderStatePollerImpl implements ProviderStatePoller {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private ProviderSender providerSender;
+	private final ConnectionContext context;
+
+	private final ProviderSender providerSender;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param lmp
+	 * @param context
 	 * @param providerSender
 	 */
 	@Inject
-	public ProviderStatePollerImpl(ProviderSender providerSender) {
+	public ProviderStatePollerImpl(final ConnectionContext context,
+			final ProviderSender providerSender) {
+		this.context = context;
 		this.providerSender = providerSender;
 	}
 

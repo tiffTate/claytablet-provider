@@ -3,6 +3,7 @@ package com.claytablet.service.event.mock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
@@ -42,9 +43,11 @@ public class ProviderStatePollerMock implements ProviderStatePoller {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private ProviderSender providerSender;
+	private final ConnectionContext context;
 
-	private MockStub mockStub;
+	private final ProviderSender providerSender;
+
+	private final MockStub mockStub;
 
 	/**
 	 * Constructor for dependency injection.
@@ -53,8 +56,9 @@ public class ProviderStatePollerMock implements ProviderStatePoller {
 	 * @param mockStub;
 	 */
 	@Inject
-	public ProviderStatePollerMock(ProviderSender providerSender,
-			MockStub mockStub) {
+	public ProviderStatePollerMock(final ConnectionContext context,
+			final ProviderSender providerSender, final MockStub mockStub) {
+		this.context = context;
 		this.providerSender = providerSender;
 		this.mockStub = mockStub;
 	}
