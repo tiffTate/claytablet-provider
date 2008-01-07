@@ -1,11 +1,19 @@
 package com.claytablet.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import com.thoughtworks.xstream.XStream;
 
 /**
  * Copyright 2007 Clay Tablet Technologies Inc.
@@ -48,7 +56,70 @@ import java.util.Map.Entry;
  */
 public class ProjectMap {
 
+	private final Log log = LogFactory.getLog(getClass());
+
+	private final static String DEFAULT_PATH = "./conf/projectMap.xml";
+
 	private Hashtable<String, ProjectMapping> projectMapping;
+
+	/**
+	 * Loads (deserializes) the project map from an xml file.
+	 * 
+	 * @param filePath
+	 *            Optional parameter specifying the path to load the project map
+	 *            xml file from. If not specified (null passed) a default will
+	 *            be used.
+	 * @throws IOException
+	 */
+	public void load(String filePath) throws IOException {
+
+		if (filePath == null || filePath.trim().length() == 0) {
+			filePath = DEFAULT_PATH;
+		}
+		log.debug("Load the project map from: " + filePath);
+
+		// load the string from disk
+		String xml = FileUtils.readFileToString(new File(filePath));
+
+		this.clear();
+		this.projectMapping = ((ProjectMap) getXStream().fromXML(xml)).projectMapping;
+	}
+
+	/**
+	 * Saves (serializes) the project map to an xml file.
+	 * 
+	 * @param filePath
+	 *            Optional parameter specifying the path to save the project map
+	 *            xml file from. If not specified (null passed) a default will
+	 *            be used.
+	 * @throws IOException
+	 */
+	public void save(String filePath) throws IOException {
+
+		if (filePath == null || filePath.trim().length() == 0) {
+			filePath = DEFAULT_PATH;
+		}
+		log.debug("Save the project map to: " + filePath);
+
+		// serialize the object to an xml string
+		String xml = getXStream().toXML(this);
+
+		// save the string to disk
+		FileUtils.writeStringToFile(new File(filePath), xml);
+	}
+
+	/**
+	 * Retrieves the XStream instance to use for serializeing / deserializing
+	 * objects to / from XML.
+	 * 
+	 * @return The XStream instance.
+	 */
+	private XStream getXStream() {
+
+		XStream xstream = new XStream();
+		xstream.alias("ProjectMap", ProjectMap.class);
+		return xstream;
+	}
 
 	/**
 	 * 
