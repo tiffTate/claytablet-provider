@@ -59,7 +59,7 @@ public class ProjectMap {
 
 	private final Log log = LogFactory.getLog(getClass());
 
-	private final ConnectionContext context;
+	private ConnectionContext context;
 
 	private Hashtable<String, ProjectMapping> projectMappings = new Hashtable<String, ProjectMapping>();
 
@@ -69,7 +69,7 @@ public class ProjectMap {
 	 * @param context
 	 */
 	@Inject
-	public ProjectMap(final ConnectionContext context) {
+	public ProjectMap(ConnectionContext context) {
 		this.context = context;
 	}
 
@@ -95,6 +95,8 @@ public class ProjectMap {
 	@SuppressWarnings("unchecked")
 	public void refresh() throws IOException {
 
+		context.load();
+
 		// retrieve the source account so we can get the xml data directory
 		// where the mappings are stored.
 		String path = context.getXmlDataDirectory() + "projectMap.xml";
@@ -115,6 +117,8 @@ public class ProjectMap {
 	 * @throws IOException
 	 */
 	public void save() throws IOException {
+
+		context.load();
 
 		String path = context.getXmlDataDirectory() + "projectMap.xml";
 
