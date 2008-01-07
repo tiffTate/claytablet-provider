@@ -10,11 +10,11 @@ import org.junit.Test;
 
 import com.google.inject.Guice;
 
-public class ProjectMapTest extends TestCase {
+public class AbsProjectMapTest extends TestCase {
 
-	private final Log log = LogFactory.getLog(getClass());
+	protected final Log log = LogFactory.getLog(getClass());
 
-	private ProjectMap projectMap;
+	protected ProjectMap projectMap;
 
 	// -------------------------------------------------------------------------
 	// Initializations
