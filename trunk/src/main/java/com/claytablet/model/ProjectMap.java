@@ -101,8 +101,6 @@ public class ProjectMap {
 	@SuppressWarnings("unchecked")
 	public void refresh() throws IOException {
 
-		context.load();
-
 		// retrieve the source account so we can get the xml data directory
 		// where the mappings are stored.
 		String path = context.getXmlDataDirectory() + "projectMap.xml";
@@ -123,8 +121,6 @@ public class ProjectMap {
 	 * @throws IOException
 	 */
 	public void save() throws IOException {
-
-		context.load();
 
 		String path = context.getXmlDataDirectory() + "projectMap.xml";
 
