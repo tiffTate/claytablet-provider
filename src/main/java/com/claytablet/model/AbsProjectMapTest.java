@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import com.google.inject.Guice;
 
-public class AbsProjectMapTest extends TestCase {
+public abstract class AbsProjectMapTest extends TestCase {
 
 	protected final Log log = LogFactory.getLog(getClass());
 
