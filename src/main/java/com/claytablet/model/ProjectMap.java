@@ -84,7 +84,7 @@ public class ProjectMap {
 	 * 
 	 * @throws IOException
 	 */
-	public void load() throws IOException {
+	private void load() throws IOException {
 
 		// check if we've already loaded the mappings.
 		if (this.projectMappings == null || this.projectMappings.size() == 0) {
