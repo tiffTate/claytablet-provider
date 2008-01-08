@@ -71,6 +71,12 @@ public class ProjectMap {
 	@Inject
 	public ProjectMap(ConnectionContext context) {
 		this.context = context;
+
+		try {
+			load();
+		} catch (IOException e) {
+			log.error(e);
+		}
 	}
 
 	/**
