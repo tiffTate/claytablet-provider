@@ -8,8 +8,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.inject.Guice;
-
 public abstract class AbsProjectMapTest extends TestCase {
 
 	protected final Log log = LogFactory.getLog(getClass());
@@ -27,9 +25,6 @@ public abstract class AbsProjectMapTest extends TestCase {
 	public void setUp() {
 
 		log.debug("SETUP: ");
-
-		log.debug("Inject the event project map.");
-		projectMap = Guice.createInjector().getInstance(ProjectMap.class);
 	}
 
 	/**
