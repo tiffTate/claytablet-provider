@@ -54,7 +54,9 @@ public class AbsProjectMapTest extends TestCase {
 	@Test
 	public void testSaveAndLoad() throws Exception {
 
-		log.debug("Create a new mock project map.");
+		log
+				.debug("Clean existing project map and populate it with new values.");
+		projectMap.clear();
 		projectMap.put("mock-provider-project-id1", new ProjectMapping(
 				"ctt-project-id", "en-us", "fr"));
 		projectMap.put("mock-provider-project-id2", new ProjectMapping(
@@ -64,18 +66,8 @@ public class AbsProjectMapTest extends TestCase {
 		projectMap.save();
 		assertNotNull(projectMap);
 
-		log.debug("Save it again.");
-		projectMap.save();
-		assertNotNull(projectMap);
-
-		log.debug("Refresh it.");
-		projectMap.refresh();
-
-		log.debug("Size: " + projectMap.size());
-		assertNotNull(projectMap);
-
-		log.debug("Refresh it again.");
-		projectMap.refresh();
+		log.debug("Load it.");
+		projectMap.load();
 
 		log.debug("Size: " + projectMap.size());
 		assertNotNull(projectMap);

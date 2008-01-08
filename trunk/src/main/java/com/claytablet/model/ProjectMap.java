@@ -70,47 +70,33 @@ public class ProjectMap {
 	 */
 	@Inject
 	public ProjectMap(ConnectionContext context) {
+
 		this.context = context;
 
 		try {
 			load();
-		} catch (IOException e) {
+		} catch (Exception e) {
 			log.error(e);
 		}
 	}
 
 	/**
-	 * Loads (deserializes) the project map from an xml file.
-	 * 
-	 * @throws IOException
-	 */
-	private void load() throws IOException {
-
-		// check if we've already loaded the mappings.
-		if (this.projectMappings == null || this.projectMappings.size() == 0) {
-			// nothing loaded, call refresh to pull the mappings from disk.
-			refresh();
-		}
-	}
-
-	/**
-	 * Loads (deserializes) the project map from an xml file.
+	 * Forecfully loads (deserializes) the project map from an xml file.
 	 * 
 	 * @throws IOException
 	 */
 	@SuppressWarnings("unchecked")
-	public void refresh() throws IOException {
+	public void load() throws IOException {
 
 		// retrieve the source account so we can get the xml data directory
 		// where the mappings are stored.
 		String path = context.getXmlDataDirectory() + "projectMap.xml";
 
-		log.debug("Refresh the project map from: " + path);
-
-		// load the xml string from disk
+		log.debug("Load the project map xml from: " + path);
 		String xml = FileUtils.readFileToString(new File(path));
 
-		// clear the existing hashtable and load in the new one
+		log
+				.debug("Clear the project map and load in (deserialize) the new one.");
 		this.clear();
 		this.projectMappings = (Hashtable) getXStream().fromXML(xml);
 	}
@@ -126,10 +112,10 @@ public class ProjectMap {
 
 		log.debug("Save the project map to: " + path);
 
-		// serialize the object to an xml string
+		log.debug("Serialize the project map to xml.");
 		String xml = getXStream().toXML(this.projectMappings);
 
-		// save the string to disk
+		log.debug("Save the project map xml to: " + path);
 		FileUtils.writeStringToFile(new File(path), xml);
 	}
 
