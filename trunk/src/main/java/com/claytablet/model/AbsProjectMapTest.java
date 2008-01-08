@@ -68,19 +68,13 @@ public class AbsProjectMapTest extends TestCase {
 		projectMap.save();
 		assertNotNull(projectMap);
 
-		log.debug("Load it.");
-		projectMap.load();
-
-		log.debug("Size: " + projectMap.size());
-		assertNotNull(projectMap);
-
-		log.debug("Load it again.");
-		projectMap.load();
-
-		log.debug("Size: " + projectMap.size());
-		assertNotNull(projectMap);
-
 		log.debug("Refresh it.");
+		projectMap.refresh();
+
+		log.debug("Size: " + projectMap.size());
+		assertNotNull(projectMap);
+
+		log.debug("Refresh it again.");
 		projectMap.refresh();
 
 		log.debug("Size: " + projectMap.size());
