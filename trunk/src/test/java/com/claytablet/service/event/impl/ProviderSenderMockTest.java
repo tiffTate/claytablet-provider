@@ -34,7 +34,7 @@ import com.google.inject.Guice;
  * <p>
  * @see AbsProviderSenderTest
  */
-public class ProviderSenderImplTest extends AbsProviderSenderTest {
+public class ProviderSenderMockTest extends AbsProviderSenderTest {
 
 	// -------------------------------------------------------------------------
 	// Initializations
