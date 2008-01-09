@@ -30,12 +30,17 @@ import com.google.inject.Injector;
  * @author <a href="mailto:drapin@clay-tablet.com">Dave Rapin</a>
  * 
  * <p>
- * Provider event cron that will inject and call the event listener service at a
- * configurable interval. Default sleep interval is 300 seconds (5 minutes).
+ * Mock event cron that will inject and call the event listener service and the
+ * state poller service at a configurable interval. Default sleep interval is
+ * 300 seconds (5 minutes).
  * 
  * <p>
  * When called the event listener service checks for new message events,
  * validates them, and passes them to the receiver for processing.
+ * 
+ * <p>
+ * When called the state poller checks for changes within the provider system
+ * and sends appropriate updates back to the platform.
  */
 public class MockEventCron {
 
