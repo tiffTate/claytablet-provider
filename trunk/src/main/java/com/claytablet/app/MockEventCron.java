@@ -5,6 +5,7 @@ import org.apache.commons.logging.LogFactory;
 
 import com.claytablet.module.MockModule;
 import com.claytablet.service.event.EventListener;
+import com.claytablet.service.event.ProviderStatePoller;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 
@@ -61,11 +62,18 @@ public class MockEventCron {
 		// load the listener
 		EventListener listener = injector.getInstance(EventListener.class);
 
+		// load the poller
+		ProviderStatePoller poller = injector
+				.getInstance(ProviderStatePoller.class);
+
 		log.debug("Start the endless loop.");
 		while (true) {
 
 			// check for messages
 			listener.checkMessages(MAX_MESSAGES);
+
+			// check for state changes
+			poller.poll();
 
 			log.debug("sleeping for " + SLEEP_INTERVAL + " seconds.");
 			Thread.sleep(SLEEP_INTERVAL * 1000);
