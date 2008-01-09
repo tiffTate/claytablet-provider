@@ -64,7 +64,7 @@ public class MockReceiver implements ProviderReceiver {
 
 	private final SourceAccountProvider sap;
 
-	private final MockStub mockStub;
+	private final MockStub stub;
 
 	private StorageClientService storageClientService;
 
@@ -79,13 +79,13 @@ public class MockReceiver implements ProviderReceiver {
 	 */
 	@Inject
 	public MockReceiver(final ConnectionContext context,
-			final SourceAccountProvider sap, final MockStub mockStub,
+			final SourceAccountProvider sap, final MockStub stub,
 			StorageClientService storageClientService) {
 
 		this.context = context;
 		this.sap = sap;
 		this.storageClientService = storageClientService;
-		this.mockStub = mockStub;
+		this.stub = stub;
 	}
 
 	/*

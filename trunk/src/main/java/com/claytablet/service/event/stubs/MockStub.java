@@ -1,9 +1,15 @@
-package com.claytablet.service.event.mock.stubs;
+package com.claytablet.service.event.stubs;
+
+import java.io.IOException;
+import java.util.Hashtable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.LanguageMap;
+import com.claytablet.model.ProjectMap;
+import com.claytablet.model.ProjectMapping;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -37,7 +43,11 @@ public class MockStub {
 
 	private final Log log = LogFactory.getLog(getClass());
 
+	private final ConnectionContext context;
+
 	private final LanguageMap languageMap;
+
+	private final ProjectMap projectMap;
 
 	/**
 	 * Constructor for dependency injection.
@@ -45,19 +55,35 @@ public class MockStub {
 	 * @param languageMap
 	 */
 	@Inject
-	public MockStub(final LanguageMap languageMap) {
+	public MockStub(final ConnectionContext context,
+			final LanguageMap languageMap, final ProjectMap projectMap) {
+
+		this.context = context;
 		this.languageMap = languageMap;
+		this.projectMap = projectMap;
 	}
 
-	public void sample() {
+	public void logConfig() throws IOException {
 
-		// Provides language code mappings between the clay tablet platform and
-		// the connecting system. Behavior is the same as a Hashtable. Use
-		// get(key) to retrieve the mapping, where key is the clay tablet
-		// platform language code.
-		if (languageMap == null) {
-			log
-					.debug("No mappings for provider. Mappings must be specified in ./accounts/languageMap.xml");
+		log.debug("** Connection parameters **");
+		Hashtable<String, String> parms = context.getConnectionParms();
+		for (String key : parms.keySet()) {
+			log.debug(key + ": " + parms.get(key));
+		}
+
+		log.debug("** Language mappings **");
+		for (String key : languageMap.keySet()) {
+			log.debug(key + ": " + languageMap.get(key));
+		}
+
+		log.debug("** Project mappings **");
+		for (String key : projectMap.keys()) {
+			log.debug("Provider Project ID -- " + key + " --");
+			ProjectMapping mapping = projectMap.get(key);
+			log.debug("CTT Project ID: " + mapping.getCttProjectId());
+			log.debug("Source language: " + mapping.getSourceLanguageCode());
+			log.debug("Target language: " + mapping.getTargetLanguageCode());
+
 		}
 
 	}
