@@ -36,9 +36,9 @@ import com.google.inject.Injector;
  * When called the provider state poller checks for important changes to asset
  * tasks and sends notifications back to the clay tablet platform.
  */
-public class ProviderStateCron {
+public class ProviderStateCronMock {
 
-	private static final Log log = LogFactory.getLog(ProviderStateCron.class);
+	private static final Log log = LogFactory.getLog(ProviderStateCronMock.class);
 
 	// the inteval to sleep for in seconds (300 = 5 minutes)
 	private static final int SLEEP_INTERVAL = 5;
