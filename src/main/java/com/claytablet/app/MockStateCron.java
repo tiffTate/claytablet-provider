@@ -3,7 +3,7 @@ package com.claytablet.app;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.claytablet.module.ProviderModuleMock;
+import com.claytablet.module.MockModule;
 import com.claytablet.service.event.ProviderStatePoller;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -36,9 +36,9 @@ import com.google.inject.Injector;
  * When called the provider state poller checks for important changes to asset
  * tasks and sends notifications back to the clay tablet platform.
  */
-public class ProviderStateCronMock {
+public class MockStateCron {
 
-	private static final Log log = LogFactory.getLog(ProviderStateCronMock.class);
+	private static final Log log = LogFactory.getLog(MockStateCron.class);
 
 	// the inteval to sleep for in seconds (300 = 5 minutes)
 	private static final int SLEEP_INTERVAL = 5;
@@ -51,7 +51,7 @@ public class ProviderStateCronMock {
 
 		log.debug("Initialize dependencies.");
 		// setup the preferred Guice injector for DI
-		Injector injector = Guice.createInjector(new ProviderModuleMock());
+		Injector injector = Guice.createInjector(new MockModule());
 
 		// load the listener
 		ProviderStatePoller poller = injector

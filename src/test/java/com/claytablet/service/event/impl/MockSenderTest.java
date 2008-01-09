@@ -1,10 +1,11 @@
-package com.claytablet.service.event.mock;
+package com.claytablet.service.event.impl;
 
 import org.junit.After;
 import org.junit.Before;
 
 import com.claytablet.module.SQSS3Module;
-import com.claytablet.service.event.AbsProviderReceiverTest;
+import com.claytablet.service.event.AbsProviderSenderTest;
+import com.claytablet.service.event.impl.MockSender;
 import com.google.inject.Guice;
 
 /**
@@ -32,9 +33,9 @@ import com.google.inject.Guice;
  * contained within the base class.
  * 
  * <p>
- * @see AbsProviderReceiverTest
+ * @see AbsProviderSenderTest
  */
-public class ProviderReceiverMockTest extends AbsProviderReceiverTest {
+public class MockSenderTest extends AbsProviderSenderTest {
 
 	// -------------------------------------------------------------------------
 	// Initializations
@@ -48,9 +49,9 @@ public class ProviderReceiverMockTest extends AbsProviderReceiverTest {
 
 		log.debug("SETUP: ");
 
-		log.debug("Inject the event receiver implementation.");
-		receiver = Guice.createInjector(new SQSS3Module()).getInstance(
-				ProviderReceiverMock.class);
+		log.debug("Inject the event sender implementation.");
+		sender = Guice.createInjector(new SQSS3Module()).getInstance(
+				MockSender.class);
 
 		// call the super to finalize setup
 		super.setUp();

@@ -1,4 +1,4 @@
-package com.claytablet.service.event.mock;
+package com.claytablet.service.event.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,7 +22,7 @@ import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.service.event.ProviderSender;
-import com.claytablet.service.event.mock.stubs.MockStub;
+import com.claytablet.service.event.stubs.MockStub;
 import com.claytablet.storage.service.StorageClientService;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.Inject;
@@ -55,7 +55,7 @@ import com.google.inject.Singleton;
  * @see StorageClientService
  */
 @Singleton
-public class ProviderReceiverMock implements ProviderReceiver {
+public class MockReceiver implements ProviderReceiver {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -80,7 +80,7 @@ public class ProviderReceiverMock implements ProviderReceiver {
 	 * @param mockStub
 	 */
 	@Inject
-	public ProviderReceiverMock(final ConnectionContext context,
+	public MockReceiver(final ConnectionContext context,
 			final SourceAccountProvider sap,
 			final ProviderSender providerSender, final MockStub mockStub,
 			StorageClientService storageClientService) {
