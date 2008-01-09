@@ -4,7 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 
 import com.claytablet.module.MockModule;
-import com.claytablet.service.event.AbsProviderReceiverTest;
+import com.claytablet.service.event.AbsProviderSenderTest;
+import com.claytablet.service.event.AbsProviderStatePollerTest;
 import com.google.inject.Guice;
 
 /**
@@ -32,9 +33,9 @@ import com.google.inject.Guice;
  * within the base class.
  * 
  * <p>
- * @see AbsProviderReceiverTest
+ * @see AbsProviderSenderTest
  */
-public class MockReceiverTest extends AbsProviderReceiverTest {
+public class MockStatePollerTest extends AbsProviderStatePollerTest {
 
 	// -------------------------------------------------------------------------
 	// Initializations
@@ -48,9 +49,9 @@ public class MockReceiverTest extends AbsProviderReceiverTest {
 
 		log.debug("SETUP: ");
 
-		log.debug("Inject the event receiver implementation.");
-		receiver = Guice.createInjector(new MockModule()).getInstance(
-				MockReceiver.class);
+		log.debug("Inject the event sender implementation.");
+		poller = Guice.createInjector(new MockModule()).getInstance(
+				MockStatePoller.class);
 
 		// call the super to finalize setup
 		super.setUp();
