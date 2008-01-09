@@ -45,9 +45,9 @@ public class MockStatePoller implements ProviderStatePoller {
 
 	private final ConnectionContext context;
 
-	private final ProviderSender providerSender;
+	private final ProviderSender sender;
 
-	private final MockStub mockStub;
+	private final MockStub stub;
 
 	/**
 	 * Constructor for dependency injection.
@@ -57,10 +57,10 @@ public class MockStatePoller implements ProviderStatePoller {
 	 */
 	@Inject
 	public MockStatePoller(final ConnectionContext context,
-			final ProviderSender providerSender, final MockStub mockStub) {
+			final ProviderSender sender, final MockStub stub) {
 		this.context = context;
-		this.providerSender = providerSender;
-		this.mockStub = mockStub;
+		this.sender = sender;
+		this.stub = stub;
 	}
 
 	/*
@@ -76,7 +76,7 @@ public class MockStatePoller implements ProviderStatePoller {
 		event.setAssetTaskId("mock-id");
 		event.setNativeState("mock-tms-state");
 		event.setNotes("mock-notes");
-		providerSender.sendEvent(event);
+		sender.sendEvent(event);
 
 	}
 
