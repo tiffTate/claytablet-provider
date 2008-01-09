@@ -1,10 +1,12 @@
 package com.claytablet.module;
 
 import com.claytablet.service.event.EventListener;
+import com.claytablet.service.event.ProviderEventListener;
 import com.claytablet.service.event.ProviderReceiver;
+import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
-import com.claytablet.service.event.impl.ProviderEventListenerImpl;
 import com.claytablet.service.event.mock.ProviderReceiverMock;
+import com.claytablet.service.event.mock.ProviderSenderMock;
 import com.claytablet.service.event.mock.ProviderStatePollerMock;
 
 /**
@@ -32,18 +34,16 @@ import com.claytablet.service.event.mock.ProviderStatePollerMock;
  * the event listener binding and overrides the default receiver binding for a
  * mock implementation.
  */
-public class MockSQSS3Module extends SQSS3Module {
+public class ProviderModuleMock extends SQSS3Module {
 
 	protected void configure() {
 
 		super.configure();
 
-		bind(EventListener.class).to(ProviderEventListenerImpl.class);
+		bind(EventListener.class).to(ProviderEventListener.class);
 
-		// override the default receiver binding
 		bind(ProviderReceiver.class).to(ProviderReceiverMock.class);
-
-		// override the default poller binding
+		bind(ProviderSender.class).to(ProviderSenderMock.class);
 		bind(ProviderStatePoller.class).to(ProviderStatePollerMock.class);
 
 	}

@@ -3,7 +3,7 @@ package com.claytablet.app;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import com.claytablet.module.MockSQSS3Module;
+import com.claytablet.module.ProviderModuleMock;
 import com.claytablet.service.event.ProviderStatePoller;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -51,7 +51,7 @@ public class ProviderStateCronMock {
 
 		log.debug("Initialize dependencies.");
 		// setup the preferred Guice injector for DI
-		Injector injector = Guice.createInjector(new MockSQSS3Module());
+		Injector injector = Guice.createInjector(new ProviderModuleMock());
 
 		// load the listener
 		ProviderStatePoller poller = injector
