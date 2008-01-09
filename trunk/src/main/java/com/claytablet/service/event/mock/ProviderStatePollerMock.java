@@ -7,7 +7,7 @@ import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
-import com.claytablet.service.event.mock.stub.MockStub;
+import com.claytablet.service.event.mock.stubs.MockStub;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 

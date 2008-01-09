@@ -50,7 +50,7 @@ public class ProviderSenderImplTest extends AbsProviderSenderTest {
 
 		log.debug("Inject the event sender implementation.");
 		sender = Guice.createInjector(new SQSS3Module()).getInstance(
-				ProviderSenderImpl.class);
+				ProviderSenderMock.class);
 
 		// call the super to finalize setup
 		super.setUp();

@@ -22,7 +22,7 @@ import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
 import com.claytablet.service.event.ProviderSender;
-import com.claytablet.service.event.mock.stub.MockStub;
+import com.claytablet.service.event.mock.stubs.MockStub;
 import com.claytablet.storage.service.StorageClientService;
 import com.claytablet.storage.service.StorageServiceException;
 import com.google.inject.Inject;

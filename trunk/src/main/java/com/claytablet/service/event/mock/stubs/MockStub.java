@@ -1,4 +1,4 @@
-package com.claytablet.service.event.mock.stub;
+package com.claytablet.service.event.mock.stubs;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
