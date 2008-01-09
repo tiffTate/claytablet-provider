@@ -33,5 +33,6 @@
 	<classpathentry kind="lib" path="lib/jms-1.1.jar"/>
 	<classpathentry kind="lib" path="lib/jsr173_1.0_api.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl-2.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/prevayler-2.3.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
