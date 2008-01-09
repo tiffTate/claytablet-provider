@@ -60,8 +60,8 @@ public class MockCron {
 	public static void main(String args[]) throws Exception {
 
 		log.debug("Initialize dependencies.");
+
 		// setup the preferred Guice injector for DI
-		// Injector injector = Guice.createInjector(new SQSS3Module());
 		Injector injector = Guice.createInjector(new MockModule());
 
 		// load the listener
