@@ -80,7 +80,7 @@ public class MockStub {
 		}
 
 		log.debug("** Language mappings **");
-		for (String key : languageMap.keySet()) {
+		for (String key : languageMap.keys()) {
 			log.debug(key + ": " + languageMap.get(key));
 		}
 
