@@ -1,8 +1,10 @@
 package com.claytablet.service.event.stubs;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -100,4 +102,59 @@ public class MockStub {
 		}
 
 	}
+
+	public void ApproveAssetTask(String assetTaskId, String downloadPath) {
+
+		// TODO - we need to let the poller know that something has changed
+	}
+
+	public void CancelAssetTask(String assetTaskId) {
+
+		// TODO - we need to let the poller know that something has changed
+	}
+
+	public void CancelSupportAsset(String supportAssetId) {
+
+		// TODO - we need to let the poller know that something has changed
+	}
+
+	public void RejectAssetTask(String assetTaskId, String downloadPath) {
+
+		// Convert all of the text to lower case
+		log.debug("Convert all of the text to lower case.");
+		try {
+			String contents = FileUtils
+					.readFileToString(new File(downloadPath));
+			contents = contents.toLowerCase();
+			FileUtils.writeStringToFile(new File(downloadPath), contents);
+		} catch (IOException e) {
+			log.error(e);
+		}
+
+		// TODO - we need to let the poller know that something has changed
+
+	}
+
+	public void StartAssetTask(String assetTaskId, String downloadPath) {
+
+		// Convert all of the text to lower case
+		log.debug("Convert all of the text to lower case.");
+		try {
+			String contents = FileUtils
+					.readFileToString(new File(downloadPath));
+			contents = contents.toLowerCase();
+			FileUtils.writeStringToFile(new File(downloadPath), contents);
+		} catch (IOException e) {
+			log.error(e);
+		}
+
+		// TODO - we need to let the poller know that something has changed
+
+	}
+
+	public void StartSupportAsset(String supportAssetId, String downloadPath) {
+
+		// TODO - we need to let the poller know that something has changed
+	}
+
 }
