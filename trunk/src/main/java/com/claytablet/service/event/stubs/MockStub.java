@@ -105,22 +105,30 @@ public class MockStub {
 
 	public void ApproveAssetTask(String assetTaskId, String downloadPath) {
 
-		// TODO - we need to let the poller know that something has changed
+		// TODO - inform the TMS that an asset task has been approved and send
+		// it the new file if downloadPath is not null.
 	}
 
 	public void CancelAssetTask(String assetTaskId) {
 
-		// TODO - we need to let the poller know that something has changed
+		// TODO - inform the TMS that an asset task has been cancelled if
+		// supported.
 	}
 
 	public void CancelSupportAsset(String supportAssetId) {
 
-		// TODO - we need to let the poller know that something has changed
+		// TODO - inform the TMS that a support asset has been cancelled if
+		// supported.
 	}
 
 	public void RejectAssetTask(String assetTaskId, String downloadPath) {
 
-		// Convert all of the text to lower case
+		// TODO - inform the TMS that an asset task has been rejected and
+		// include the changed file if downloadPath is not null.
+
+		// For the mock implementation we're simply going to convert all of the
+		// text to lower case and let the poller know that it's been
+		// re-translated.
 		log.debug("Convert all of the text to lower case.");
 		try {
 			String contents = FileUtils
@@ -137,7 +145,10 @@ public class MockStub {
 
 	public void StartAssetTask(String assetTaskId, String downloadPath) {
 
-		// Convert all of the text to lower case
+		// TODO - submit the new asset task to the TMS.
+
+		// For the mock implementation we're simply going to convert all of the
+		// text to lower case and let the poller know that it's been translated.
 		log.debug("Convert all of the text to lower case.");
 		try {
 			String contents = FileUtils
@@ -153,6 +164,8 @@ public class MockStub {
 	}
 
 	public void StartSupportAsset(String supportAssetId, String downloadPath) {
+
+		// TODO - make the support asset available in the TMS if supported.
 
 		// TODO - we need to let the poller know that something has changed
 	}
