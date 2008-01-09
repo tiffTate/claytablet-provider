@@ -1,4 +1,4 @@
-package com.claytablet.service.event.impl;
+package com.claytablet.service.event.mock;
 
 import org.junit.After;
 import org.junit.Before;
@@ -50,7 +50,7 @@ public class ProviderReceiverMockTest extends AbsProviderReceiverTest {
 
 		log.debug("Inject the event receiver implementation.");
 		receiver = Guice.createInjector(new SQSS3Module()).getInstance(
-				ProviderReceiverImpl.class);
+				ProviderReceiverMock.class);
 
 		// call the super to finalize setup
 		super.setUp();
