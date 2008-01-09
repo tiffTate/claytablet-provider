@@ -18,10 +18,8 @@ import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.platform.StartSupportAsset;
 import com.claytablet.model.event.provider.SubmitAssetTask;
 import com.claytablet.provider.SourceAccountProvider;
-import com.claytablet.queue.service.QueueServiceException;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
-import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.stubs.MockStub;
 import com.claytablet.storage.service.StorageClientService;
 import com.claytablet.storage.service.StorageServiceException;
@@ -49,9 +47,12 @@ import com.google.inject.Singleton;
  * @author <a href="mailto:drapin@clay-tablet.com">Dave Rapin</a>
  * 
  * <p>
- * This is the default implementation for the provider receiver.
+ * This is the mock implementation for the provider receiver.
  * 
  * <p>
+ * @see ConnectionContext
+ * @see SourceAccountProvider
+ * @see MockStub
  * @see StorageClientService
  */
 @Singleton
@@ -62,9 +63,6 @@ public class MockReceiver implements ProviderReceiver {
 	private final ConnectionContext context;
 
 	private final SourceAccountProvider sap;
-
-	// we're going to automatically respond to messages
-	private final ProviderSender providerSender;
 
 	private final MockStub mockStub;
 
@@ -81,14 +79,12 @@ public class MockReceiver implements ProviderReceiver {
 	 */
 	@Inject
 	public MockReceiver(final ConnectionContext context,
-			final SourceAccountProvider sap,
-			final ProviderSender providerSender, final MockStub mockStub,
+			final SourceAccountProvider sap, final MockStub mockStub,
 			StorageClientService storageClientService) {
 
 		this.context = context;
 		this.sap = sap;
 		this.storageClientService = storageClientService;
-		this.providerSender = providerSender;
 		this.mockStub = mockStub;
 	}
 
@@ -210,11 +206,6 @@ public class MockReceiver implements ProviderReceiver {
 			event2.setAssetTaskId(event.getAssetTaskId());
 			event2.setNativeState("Mock State");
 
-			try {
-				providerSender.sendEvent(event2, downloadPath);
-			} catch (QueueServiceException e) {
-				log.error(e);
-			}
 		}
 
 	}
@@ -257,12 +248,6 @@ public class MockReceiver implements ProviderReceiver {
 		SubmitAssetTask event2 = new SubmitAssetTask();
 		event2.setAssetTaskId(event.getAssetTaskId());
 		event2.setNativeState("Mock State");
-
-		try {
-			providerSender.sendEvent(event2, downloadPath);
-		} catch (QueueServiceException e) {
-			log.error(e);
-		}
 
 	}
 
