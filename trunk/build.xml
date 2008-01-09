@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<project name="claytablet-provider" basedir="." default="dist">
+<project name="provider-mock" basedir="." default="dist">
 
 	<!-- Name of project and version -->
 	<property name="proj.name" value="${ant.project.name}" />
@@ -71,42 +71,6 @@
 		<mkdir dir="${dist.dir}" />
 
 		<jar jarfile="${dist.dir}/${proj.name}-${proj.version}.jar" compress="true" basedir="${target.compile.main.dir}" />
-
-		<copy todir="../provider-impl/provider-across/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-
-		<copy todir="../provider-impl/provider-freeway/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-
-		<copy todir="../provider-impl/provider-idiom/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-
-		<copy todir="../provider-impl/provider-lang-weaver/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-
-		<copy todir="../provider-impl/provider-sdl/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
-
-		<copy todir="../provider-impl/provider-teamwork/lib">
-			<fileset dir="${dist.dir}">
-				<include name="**/*.jar" />
-			</fileset>
-		</copy>
 
 	</target>
 
