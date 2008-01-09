@@ -52,12 +52,14 @@ public class MockStatePoller implements ProviderStatePoller {
 	/**
 	 * Constructor for dependency injection.
 	 * 
-	 * @param providerSender
-	 * @param mockStub;
+	 * @param context
+	 * @param sender
+	 * @param stub
 	 */
 	@Inject
 	public MockStatePoller(final ConnectionContext context,
 			final ProviderSender sender, final MockStub stub) {
+
 		this.context = context;
 		this.sender = sender;
 		this.stub = stub;
