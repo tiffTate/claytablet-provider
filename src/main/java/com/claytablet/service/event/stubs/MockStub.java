@@ -6,6 +6,7 @@ import java.util.Hashtable;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.AssetTaskMap;
 import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.LanguageMap;
 import com.claytablet.model.ProjectMap;
@@ -49,18 +50,25 @@ public class MockStub {
 
 	private final ProjectMap projectMap;
 
+	private final AssetTaskMap assetTaskMap;
+
 	/**
 	 * Constructor for dependency injection.
 	 * 
+	 * @param context
 	 * @param languageMap
+	 * @param projectMap
+	 * @param assetTaskMap
 	 */
 	@Inject
 	public MockStub(final ConnectionContext context,
-			final LanguageMap languageMap, final ProjectMap projectMap) {
+			final LanguageMap languageMap, final ProjectMap projectMap,
+			final AssetTaskMap assetTaskMap) {
 
 		this.context = context;
 		this.languageMap = languageMap;
 		this.projectMap = projectMap;
+		this.assetTaskMap = assetTaskMap;
 	}
 
 	public void logConfig() throws IOException {
@@ -84,6 +92,11 @@ public class MockStub {
 			log.debug("Source language: " + mapping.getSourceLanguageCode());
 			log.debug("Target language: " + mapping.getTargetLanguageCode());
 
+		}
+
+		log.debug("** Asset task mappings **");
+		for (String key : assetTaskMap.keys()) {
+			log.debug(key + ": " + assetTaskMap.get(key));
 		}
 
 	}
