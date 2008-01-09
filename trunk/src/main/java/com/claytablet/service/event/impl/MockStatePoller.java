@@ -1,4 +1,4 @@
-package com.claytablet.service.event.mock;
+package com.claytablet.service.event.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -7,7 +7,7 @@ import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
-import com.claytablet.service.event.mock.stubs.MockStub;
+import com.claytablet.service.event.stubs.MockStub;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -39,7 +39,7 @@ import com.google.inject.Singleton;
  * @see UpdateAssetTask
  */
 @Singleton
-public class ProviderStatePollerMock implements ProviderStatePoller {
+public class MockStatePoller implements ProviderStatePoller {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -56,7 +56,7 @@ public class ProviderStatePollerMock implements ProviderStatePoller {
 	 * @param mockStub;
 	 */
 	@Inject
-	public ProviderStatePollerMock(final ConnectionContext context,
+	public MockStatePoller(final ConnectionContext context,
 			final ProviderSender providerSender, final MockStub mockStub) {
 		this.context = context;
 		this.providerSender = providerSender;

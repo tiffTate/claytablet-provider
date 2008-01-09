@@ -1,4 +1,4 @@
-package com.claytablet.service.event.mock;
+package com.claytablet.service.event.impl;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -55,7 +55,7 @@ import com.google.inject.Singleton;
  * @see AbsEvent
  */
 @Singleton
-public class ProviderSenderMock implements ProviderSender {
+public class MockSender implements ProviderSender {
 
 	private final Log log = LogFactory.getLog(getClass());
 
@@ -79,7 +79,7 @@ public class ProviderSenderMock implements ProviderSender {
 	 * @param storageClientService
 	 */
 	@Inject
-	public ProviderSenderMock(final ConnectionContext context,
+	public MockSender(final ConnectionContext context,
 			final SourceAccountProvider sap, final TargetAccountProvider tap,
 			QueuePublisherService queuePublisherService,
 			StorageClientService storageClientService) {
