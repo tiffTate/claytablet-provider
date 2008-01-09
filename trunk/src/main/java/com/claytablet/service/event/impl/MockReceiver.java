@@ -97,6 +97,7 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
+		String downloadPath = null;
 		// check to see if new content was submitted with the event
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the approval.");
@@ -106,15 +107,16 @@ public class MockReceiver implements ProviderReceiver {
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = storageClientService
-					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
-							"./files/received/");
+			downloadPath = storageClientService.downloadLatestAssetTaskVersion(
+					event.getAssetTaskId(), context.getTargetDirectory());
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
 		}
 
-		// do nothing
+		// call the stub to approve the asset task in the TMS
+		stub.ApproveAssetTask(event.getAssetTaskId(), downloadPath);
+
 	}
 
 	/*
@@ -126,7 +128,8 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// do nothing
+		// call the stub to cancel the asset task in the TMS
+		stub.CancelAssetTask(event.getAssetTaskId());
 
 	}
 
@@ -139,9 +142,8 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// TODO - provider integration code goes here.
-
-		// If an exception is thrown the event will remain on the queue.
+		// call the stub to cancel the support asset in the TMS
+		stub.CancelSupportAsset(event.getSupportAssetId());
 
 	}
 
@@ -154,7 +156,7 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// do nothing
+		// TODO - should do something with the error
 
 		log.error(event.getErrorMessage());
 
@@ -170,6 +172,7 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
+		String downloadPath = null;
 		// check to see if new content was submitted with the event
 		if (event.isWithContent()) {
 			log.debug("A new asset task revision was sent with the rejection.");
@@ -179,33 +182,16 @@ public class MockReceiver implements ProviderReceiver {
 
 			log.debug("Download the latest asset task revision for: "
 					+ event.getAssetTaskId());
-			String downloadPath = storageClientService
-					.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
-							"./files/received/");
+			downloadPath = storageClientService.downloadLatestAssetTaskVersion(
+					event.getAssetTaskId(), context.getTargetDirectory());
 
 			log.debug("Downloaded an asset task version file to: "
 					+ downloadPath);
 
-			// If it's a text file, convert all of the text to lower case
-			if (event.getFileExt().equals("txt")) {
-				log.debug("Convert all of the text to lower case.");
-				try {
-					String contents = FileUtils.readFileToString(new File(
-							downloadPath));
-					contents = contents.toLowerCase();
-					FileUtils.writeStringToFile(new File(downloadPath),
-							contents);
-				} catch (IOException e) {
-					log.error(e);
-				}
-			}
-
-			log.debug("Submit the mock event.");
-			SubmitAssetTask event2 = new SubmitAssetTask();
-			event2.setAssetTaskId(event.getAssetTaskId());
-			event2.setNativeState("Mock State");
-
 		}
+
+		// call the stub to reject the asset task in the TMS
+		stub.RejectAssetTask(event.getAssetTaskId(), downloadPath);
 
 	}
 
@@ -225,28 +211,13 @@ public class MockReceiver implements ProviderReceiver {
 		log.debug("Download the latest asset task revision for: "
 				+ event.getAssetTaskId());
 		String downloadPath = storageClientService
-				.downloadLatestAssetTaskVersion(event.getAssetTaskId(),
-						"./files/received/");
+				.downloadLatestAssetTaskVersion(event.getAssetTaskId(), context
+						.getTargetDirectory());
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
-		// If it's a text file, convert all of the text to upper case
-		if (event.getFileExt().equals("txt")) {
-			log.debug("Convert all of the text to upper case.");
-			try {
-				String contents = FileUtils.readFileToString(new File(
-						downloadPath));
-				contents = contents.toUpperCase();
-				FileUtils.writeStringToFile(new File(downloadPath), contents);
-			} catch (IOException e) {
-				log.error(e);
-			}
-		}
-
-		log.debug("Submit the mock event.");
-		SubmitAssetTask event2 = new SubmitAssetTask();
-		event2.setAssetTaskId(event.getAssetTaskId());
-		event2.setNativeState("Mock State");
+		// call the stub to reject the asset task in the TMS
+		stub.StartAssetTask(event.getAssetTaskId(), downloadPath);
 
 	}
 
@@ -266,7 +237,8 @@ public class MockReceiver implements ProviderReceiver {
 		log.debug("Download the support asset for: "
 				+ event.getSupportAssetId());
 		String downloadPath = storageClientService.downloadSupportAsset(event
-				.getSupportAssetId(), event.getFileExt(), "./files/received/");
+				.getSupportAssetId(), event.getFileExt(), context
+				.getTargetDirectory());
 
 		log.debug("Downloaded a support asset file to: " + downloadPath);
 
