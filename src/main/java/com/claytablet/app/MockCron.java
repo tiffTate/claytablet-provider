@@ -42,9 +42,9 @@ import com.google.inject.Injector;
  * When called the state poller checks for changes within the provider system
  * and sends appropriate updates back to the platform.
  */
-public class MockEventCron {
+public class MockCron {
 
-	private static final Log log = LogFactory.getLog(MockEventCron.class);
+	private static final Log log = LogFactory.getLog(MockCron.class);
 
 	// the inteval to sleep for in seconds (300 = 5 minutes)
 	private static final int SLEEP_INTERVAL = 5;
