@@ -34,7 +34,7 @@ import com.google.inject.Guice;
  * <p>
  * @see AbsProviderReceiverTest
  */
-public class ProviderReceiverImplTest extends AbsProviderReceiverTest {
+public class ProviderReceiverMockTest extends AbsProviderReceiverTest {
 
 	// -------------------------------------------------------------------------
 	// Initializations
