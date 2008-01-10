@@ -3,7 +3,9 @@ package com.claytablet.service.event.impl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.AssetTaskMap;
 import com.claytablet.model.ConnectionContext;
+import com.claytablet.model.LanguageMap;
 import com.claytablet.model.event.provider.UpdateAssetTaskState;
 import com.claytablet.service.event.ProviderSender;
 import com.claytablet.service.event.ProviderStatePoller;
@@ -43,7 +45,14 @@ public class MockStatePoller implements ProviderStatePoller {
 
 	private final Log log = LogFactory.getLog(getClass());
 
+	// also injected into the stub, use where appropriate
 	private final ConnectionContext context;
+
+	// also injected into the stub, use where appropriate
+	private final LanguageMap languageMap;
+
+	// also injected into the stub, use where appropriate
+	private AssetTaskMap assetTaskMap;
 
 	private final ProviderSender sender;
 
@@ -53,14 +62,19 @@ public class MockStatePoller implements ProviderStatePoller {
 	 * Constructor for dependency injection.
 	 * 
 	 * @param context
+	 * @param languageMap
+	 * @param assetTaskMap
 	 * @param sender
 	 * @param stub
 	 */
 	@Inject
 	public MockStatePoller(final ConnectionContext context,
+			final LanguageMap languageMap, AssetTaskMap assetTaskMap,
 			final ProviderSender sender, final MockStub stub) {
 
 		this.context = context;
+		this.languageMap = languageMap;
+		this.assetTaskMap = assetTaskMap;
 		this.sender = sender;
 		this.stub = stub;
 	}
