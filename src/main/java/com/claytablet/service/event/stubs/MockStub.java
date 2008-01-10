@@ -66,6 +66,11 @@ public class MockStub {
 		this.assetTaskMap = assetTaskMap;
 	}
 
+	/**
+	 * Prints out the connection params and mappings that were injected.
+	 * 
+	 * @throws IOException
+	 */
 	public void logConfig() throws IOException {
 
 		log.debug("** Connection parameters **");
@@ -93,6 +98,12 @@ public class MockStub {
 
 	}
 
+	/**
+	 * Dummy method. To be replaced with proper stub methods.
+	 * 
+	 * @param event
+	 * @param downloadPath
+	 */
 	public void doSomething(AbsEvent event, String downloadPath) {
 
 		log.debug("Event type: " + event.getClass() + ", downloadPath: "
