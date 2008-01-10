@@ -49,7 +49,7 @@ public class MockStatePollerTest extends AbsProviderStatePollerTest {
 
 		log.debug("SETUP: ");
 
-		log.debug("Inject the event sender implementation.");
+		log.debug("Inject the poller implementation.");
 		poller = Guice.createInjector(new MockModule()).getInstance(
 				MockStatePoller.class);
 
