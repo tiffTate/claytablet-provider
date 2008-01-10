@@ -61,8 +61,10 @@ public class MockReceiver implements ProviderReceiver {
 
 	private final SourceAccountProvider sap;
 
+	// also injected into the stub, use where appropriate
 	private final LanguageMap languageMap;
 
+	// also injected into the stub, use where appropriate
 	private AssetTaskMap assetTaskMap;
 
 	private final MockStub stub;
@@ -123,9 +125,10 @@ public class MockReceiver implements ProviderReceiver {
 		// We now have access to the necessary asset task fields and the
 		// associated file if it was changed during the approval.
 
-		// TODO - inform the TMS that an asset task has been approved and send
-		// it the new file if downloadPath is not null.
-		// I.e. stub.ApproveAssetTask(nativeAssetTaskId, downloadPath);
+		// TODO - inform the TMS that an asset task has been approved and
+		// include the download path if a new file was passed with the
+		// approval.
+		stub.doSomething(event, downloadPath);
 
 	}
 
@@ -143,7 +146,7 @@ public class MockReceiver implements ProviderReceiver {
 
 		// TODO - inform the TMS that an asset task has been cancelled if
 		// supported.
-		// I.e. stub.CancelAssetTask(nativeAssetTaskId);
+		stub.doSomething(event, null);
 
 	}
 
@@ -156,8 +159,9 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// call the stub to cancel the support asset in the TMS
-		stub.CancelSupportAsset(event.getSupportAssetId());
+		// TODO - inform the TMS that a support asset has been cancelled if
+		// supported.
+		stub.doSomething(event, null);
 
 	}
 
@@ -173,6 +177,10 @@ public class MockReceiver implements ProviderReceiver {
 		// TODO - should do something with the error
 
 		log.error(event.getErrorMessage());
+
+		// TODO - inform the TMS that a processing error has occured if
+		// supported.
+		stub.doSomething(event, null);
 
 	}
 
@@ -204,8 +212,10 @@ public class MockReceiver implements ProviderReceiver {
 
 		}
 
-		// call the stub to reject the asset task in the TMS
-		stub.RejectAssetTask(event.getAssetTaskId(), downloadPath);
+		// TODO - inform the TMS that an asset task has been rejected and
+		// include the download path if a new file was passed with the
+		// rejection.
+		stub.doSomething(event, downloadPath);
 
 	}
 
@@ -230,8 +240,9 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug("Downloaded an asset task version file to: " + downloadPath);
 
-		// call the stub to reject the asset task in the TMS
-		stub.StartAssetTask(event.getAssetTaskId(), downloadPath);
+		// TODO - inform the TMS that a new asset task needs to be created and
+		// include the download path to the new file.
+		stub.doSomething(event, downloadPath);
 
 	}
 
@@ -255,6 +266,10 @@ public class MockReceiver implements ProviderReceiver {
 				.getTargetDirectory());
 
 		log.debug("Downloaded a support asset file to: " + downloadPath);
+
+		// TODO - inform the TMS that a new support asset has been supplied and
+		// include the download path to the new file if supported.
+		stub.doSomething(event, downloadPath);
 
 	}
 

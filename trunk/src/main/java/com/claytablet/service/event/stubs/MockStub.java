@@ -1,10 +1,8 @@
 package com.claytablet.service.event.stubs;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Hashtable;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -12,6 +10,7 @@ import com.claytablet.model.AssetTaskMap;
 import com.claytablet.model.AssetTaskMapping;
 import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.LanguageMap;
+import com.claytablet.model.event.AbsEvent;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -94,71 +93,23 @@ public class MockStub {
 
 	}
 
-	public void ApproveAssetTask(String assetTaskId, String downloadPath) {
+	public void doSomething(AbsEvent event, String downloadPath) {
 
-		// TODO - inform the TMS that an asset task has been approved and send
-		// it the new file if downloadPath is not null.
-	}
+		log.debug("Event type: " + event.getClass() + ", downloadPath: "
+				+ downloadPath);
 
-	public void CancelAssetTask(String assetTaskId) {
+		// Within the stub you have access to the following objects through
+		// dependency injection:
+		// 1. The connection context parameters which are hold connection
+		// information specific to a provider system.
+		// 2. The language mappings which are used to map clay tablet language
+		// codes to provider specific language codes.
+		// 3. The asset task mappings which are used to map clay tablet asset
+		// task identifier to provider specific identifiers and projects.
 
-		// TODO - inform the TMS that an asset task has been cancelled if
-		// supported.
-	}
+		// Event fields and new file paths can be passed in from the receiver or
+		// poller as needed.
 
-	public void CancelSupportAsset(String supportAssetId) {
-
-		// TODO - inform the TMS that a support asset has been cancelled if
-		// supported.
-	}
-
-	public void RejectAssetTask(String assetTaskId, String downloadPath) {
-
-		// TODO - inform the TMS that an asset task has been rejected and
-		// include the changed file if downloadPath is not null.
-
-		// For the mock implementation we're simply going to convert all of the
-		// text to lower case and let the poller know that it's been
-		// re-translated.
-		log.debug("Convert all of the text to lower case.");
-		try {
-			String contents = FileUtils
-					.readFileToString(new File(downloadPath));
-			contents = contents.toLowerCase();
-			FileUtils.writeStringToFile(new File(downloadPath), contents);
-		} catch (IOException e) {
-			log.error(e);
-		}
-
-		// TODO - we need to let the poller know that something has changed
-
-	}
-
-	public void StartAssetTask(String assetTaskId, String downloadPath) {
-
-		// TODO - submit the new asset task to the TMS.
-
-		// For the mock implementation we're simply going to convert all of the
-		// text to lower case and let the poller know that it's been translated.
-		log.debug("Convert all of the text to lower case.");
-		try {
-			String contents = FileUtils
-					.readFileToString(new File(downloadPath));
-			contents = contents.toLowerCase();
-			FileUtils.writeStringToFile(new File(downloadPath), contents);
-		} catch (IOException e) {
-			log.error(e);
-		}
-
-		// TODO - we need to let the poller know that something has changed
-
-	}
-
-	public void StartSupportAsset(String supportAssetId, String downloadPath) {
-
-		// TODO - make the support asset available in the TMS if supported.
-
-		// TODO - we need to let the poller know that something has changed
 	}
 
 }
