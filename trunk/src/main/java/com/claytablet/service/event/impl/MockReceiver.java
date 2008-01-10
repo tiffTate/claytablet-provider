@@ -57,6 +57,7 @@ public class MockReceiver implements ProviderReceiver {
 
 	private final Log log = LogFactory.getLog(getClass());
 
+	// also injected into the stub, use where appropriate
 	private final ConnectionContext context;
 
 	private final SourceAccountProvider sap;
