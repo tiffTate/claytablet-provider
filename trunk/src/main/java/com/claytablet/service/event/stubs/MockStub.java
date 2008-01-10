@@ -35,9 +35,7 @@ import com.google.inject.Singleton;
  * @author <a href="mailto:drapin@clay-tablet.com">Dave Rapin</a>
  * 
  * <p>
- * This is the mock implementation for a connected system.
- * 
- * @see LanguageMapProvider
+ * This is the Mock implementation for a connected system.
  */
 @Singleton
 public class MockStub {
