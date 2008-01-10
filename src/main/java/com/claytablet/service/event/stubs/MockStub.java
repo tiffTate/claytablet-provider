@@ -9,10 +9,9 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.claytablet.model.AssetTaskMap;
+import com.claytablet.model.AssetTaskMapping;
 import com.claytablet.model.ConnectionContext;
 import com.claytablet.model.LanguageMap;
-import com.claytablet.model.ProjectMap;
-import com.claytablet.model.ProjectMapping;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
@@ -50,26 +49,21 @@ public class MockStub {
 
 	private final LanguageMap languageMap;
 
-	private final ProjectMap projectMap;
-
-	private final AssetTaskMap assetTaskMap;
+	private AssetTaskMap assetTaskMap;
 
 	/**
 	 * Constructor for dependency injection.
 	 * 
 	 * @param context
 	 * @param languageMap
-	 * @param projectMap
 	 * @param assetTaskMap
 	 */
 	@Inject
 	public MockStub(final ConnectionContext context,
-			final LanguageMap languageMap, final ProjectMap projectMap,
-			final AssetTaskMap assetTaskMap) {
+			final LanguageMap languageMap, AssetTaskMap assetTaskMap) {
 
 		this.context = context;
 		this.languageMap = languageMap;
-		this.projectMap = projectMap;
 		this.assetTaskMap = assetTaskMap;
 	}
 
@@ -86,19 +80,16 @@ public class MockStub {
 			log.debug(key + ": " + languageMap.get(key));
 		}
 
-		log.debug("** Project mappings **");
-		for (String key : projectMap.keys()) {
-			log.debug("Provider Project ID -- " + key + " --");
-			ProjectMapping mapping = projectMap.get(key);
+		log.debug("** Asset Task mappings **");
+		for (String key : assetTaskMap.keys()) {
+			log.debug("Provider Asset Task ID -- " + key + " --");
+			AssetTaskMapping mapping = assetTaskMap.get(key);
+			log.debug("CTT Asset Task ID: " + mapping.getCttAssetTaskId());
 			log.debug("CTT Project ID: " + mapping.getCttProjectId());
+			log.debug("Provider Project ID: " + mapping.getProviderProjectId());
 			log.debug("Source language: " + mapping.getSourceLanguageCode());
 			log.debug("Target language: " + mapping.getTargetLanguageCode());
 
-		}
-
-		log.debug("** Asset task mappings **");
-		for (String key : assetTaskMap.keys()) {
-			log.debug(key + ": " + assetTaskMap.get(key));
 		}
 
 	}

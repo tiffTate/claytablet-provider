@@ -1,13 +1,11 @@
 package com.claytablet.service.event.impl;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import com.claytablet.model.AssetTaskMap;
 import com.claytablet.model.ConnectionContext;
+import com.claytablet.model.LanguageMap;
 import com.claytablet.model.event.Account;
 import com.claytablet.model.event.platform.ApprovedAssetTask;
 import com.claytablet.model.event.platform.CanceledAssetTask;
@@ -16,7 +14,6 @@ import com.claytablet.model.event.platform.ProcessingError;
 import com.claytablet.model.event.platform.RejectedAssetTask;
 import com.claytablet.model.event.platform.StartAssetTask;
 import com.claytablet.model.event.platform.StartSupportAsset;
-import com.claytablet.model.event.provider.SubmitAssetTask;
 import com.claytablet.provider.SourceAccountProvider;
 import com.claytablet.service.event.EventServiceException;
 import com.claytablet.service.event.ProviderReceiver;
@@ -64,6 +61,10 @@ public class MockReceiver implements ProviderReceiver {
 
 	private final SourceAccountProvider sap;
 
+	private final LanguageMap languageMap;
+
+	private AssetTaskMap assetTaskMap;
+
 	private final MockStub stub;
 
 	private StorageClientService storageClientService;
@@ -73,16 +74,21 @@ public class MockReceiver implements ProviderReceiver {
 	 * 
 	 * @param context
 	 * @param sap
+	 * @param languageMap
+	 * @param assetTaskMap
 	 * @param stub
 	 * @param storageClientService
 	 */
 	@Inject
 	public MockReceiver(final ConnectionContext context,
-			final SourceAccountProvider sap, final MockStub stub,
+			final SourceAccountProvider sap, final LanguageMap languageMap,
+			AssetTaskMap assetTaskMap, final MockStub stub,
 			StorageClientService storageClientService) {
 
 		this.context = context;
 		this.sap = sap;
+		this.languageMap = languageMap;
+		this.assetTaskMap = assetTaskMap;
 		this.stub = stub;
 		this.storageClientService = storageClientService;
 	}
@@ -114,8 +120,12 @@ public class MockReceiver implements ProviderReceiver {
 					+ downloadPath);
 		}
 
-		// call the stub to approve the asset task in the TMS
-		stub.ApproveAssetTask(event.getAssetTaskId(), downloadPath);
+		// We now have access to the necessary asset task fields and the
+		// associated file if it was changed during the approval.
+
+		// TODO - inform the TMS that an asset task has been approved and send
+		// it the new file if downloadPath is not null.
+		// I.e. stub.ApproveAssetTask(nativeAssetTaskId, downloadPath);
 
 	}
 
@@ -128,8 +138,12 @@ public class MockReceiver implements ProviderReceiver {
 
 		log.debug(event.getClass().getSimpleName() + " event received.");
 
-		// call the stub to cancel the asset task in the TMS
-		stub.CancelAssetTask(event.getAssetTaskId());
+		// We know that the producer has initiated a cancel event for an asset
+		// task.
+
+		// TODO - inform the TMS that an asset task has been cancelled if
+		// supported.
+		// I.e. stub.CancelAssetTask(nativeAssetTaskId);
 
 	}
 
