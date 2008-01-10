@@ -48,7 +48,7 @@ public class MockReceiverTest extends AbsProviderReceiverTest {
 
 		log.debug("SETUP: ");
 
-		log.debug("Inject the event receiver implementation.");
+		log.debug("Inject the receiver implementation.");
 		receiver = Guice.createInjector(new MockModule()).getInstance(
 				MockReceiver.class);
 
