@@ -45,12 +45,6 @@ import com.google.inject.Singleton;
  * 
  * <p>
  * This is the mock implementation for the provider receiver.
- * 
- * <p>
- * @see ConnectionContext
- * @see SourceAccountProvider
- * @see MockStub
- * @see StorageClientService
  */
 @Singleton
 public class MockReceiver implements ProviderReceiver {
