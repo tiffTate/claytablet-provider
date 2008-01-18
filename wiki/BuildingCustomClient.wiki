@@ -14,8 +14,8 @@ Please refer to the following resources:
 * http://aws.amazon.com/s3
 
 Ruby SQS & S3 libraries:
-*  http://sqs.rubyforge.org/
-*  https://rubyforge.org/projects/ruby-s3
+*http://sqs.rubyforge.org/
+*https://rubyforge.org/projects/ruby-s3
 
 PHP SQS & S3 libraries:
 * http://www.intellispire.com/web/grid-computing/amazon-web-services/php-sqs-class-released.html
