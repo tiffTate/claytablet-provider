@@ -9,6 +9,26 @@ There are two main components that you will need to interface with. The message 
 
 Both of these components use the Amazon Web Services (AWS) which are exposed via REST and SOAP. Many languages already have libraries specifically created to talk to AWS.
 
+Please refer to the following resources:
+http://aws.amazon.com/sqs
+http://aws.amazon.com/s3
+
+Ruby SQS & S3 libraries:
+http://sqs.rubyforge.org/
+https://rubyforge.org/projects/ruby-s3
+
+PHP SQS & S3 libraries:
+http://www.intellispire.com/web/grid-computing/amazon-web-services/php-sqs-class-released.html
+http://edoceo.com/creo/phps3tk/
+
+Python SQS & S3 library:
+http://pypi.python.org/pypi/Python-Amazon/0.5
+
+.NET:
+http://www.devx.com/dotnet/Article/33392
+http://sourceforge.net/projects/nets3client/
+
+
 In order to send and receive events to/from the clay tablet platform you will need to write a client that can talk to SQS. All clay tablet platform events are XML documents which are documented here.
 
 In order to send and receive files to / from the clay tablet platform you will need to write a client that can talk to S3. The clay tablet file naming conventions are documented here.
