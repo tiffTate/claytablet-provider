@@ -1,0 +1,14 @@
+#summary Instructions for building a custom non-java client to interface with the clay tablet platform.
+#labels custom,client,claytablet
+
+= Building A Custom Client =
+
+In some cases using the open source client and libraries we provide to talk to the clay tablet system may not be the ideal solution. However, it is entirely feasible to roll a custom client in your language of choice (Ruby, PHP, Python, .NET, etc.).
+
+There are two main components that you will need to interface with. The message queue for sending and receiving events and the remote storage service for sending and receiving files.
+
+Both of these components use the Amazon Web Services (AWS) which are exposed via REST and SOAP. Many languages already have libraries specifically created to talk to AWS.
+
+In order to send and receive events to/from the clay tablet platform you will need to write a client that can talk to SQS. All clay tablet platform events are XML documents which are documented here.
+
+In order to send and receive files to / from the clay tablet platform you will need to write a client that can talk to S3. The clay tablet file naming conventions are documented here.
