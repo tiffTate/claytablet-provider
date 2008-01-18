@@ -25,8 +25,8 @@ Python SQS & S3 library:
   * http://pypi.python.org/pypi/Python-Amazon/0.5
 
 .NET:
-* http://www.devx.com/dotnet/Article/33392
-* http://sourceforge.net/projects/nets3client/
+  * http://www.devx.com/dotnet/Article/33392
+  * http://sourceforge.net/projects/nets3client/
 
 
 In order to send and receive events to/from the clay tablet platform you will need to write a client that can talk to SQS. All clay tablet platform events are XML documents which are documented here.
