@@ -4,7 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.claytablet.model.AssetTaskMap;
-import com.claytablet.module.MockModule;
+import com.claytablet.module.MockProviderModule;
 import com.claytablet.service.event.EventListener;
 import com.claytablet.service.event.ProviderStatePoller;
 import com.google.inject.Guice;
@@ -63,7 +63,7 @@ public class MockCron {
 		log.debug("Initialize dependencies.");
 
 		// setup the preferred Guice injector for DI
-		Injector injector = Guice.createInjector(new MockModule());
+		Injector injector = Guice.createInjector(new MockProviderModule());
 
 		// load the listener
 		EventListener listener = injector.getInstance(EventListener.class);

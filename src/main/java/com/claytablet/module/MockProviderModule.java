@@ -31,7 +31,7 @@ import com.claytablet.service.event.impl.MockStatePoller;
  * Mock module for Guice configuration. Extends the SQSS3Module and specifies
  * the event listener, provider receiver, and provider state poller bindings.
  */
-public class MockModule extends SQSS3Module {
+public class MockProviderModule extends SQSS3Module {
 
 	protected void configure() {
 

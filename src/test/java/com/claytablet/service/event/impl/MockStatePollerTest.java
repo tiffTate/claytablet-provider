@@ -3,7 +3,7 @@ package com.claytablet.service.event.impl;
 import org.junit.After;
 import org.junit.Before;
 
-import com.claytablet.module.MockModule;
+import com.claytablet.module.MockProviderModule;
 import com.claytablet.service.event.AbsProviderSenderTest;
 import com.claytablet.service.event.AbsProviderStatePollerTest;
 import com.google.inject.Guice;
@@ -50,7 +50,7 @@ public class MockStatePollerTest extends AbsProviderStatePollerTest {
 		log.debug("SETUP: ");
 
 		log.debug("Inject the poller implementation.");
-		poller = Guice.createInjector(new MockModule()).getInstance(
+		poller = Guice.createInjector(new MockProviderModule()).getInstance(
 				MockStatePoller.class);
 
 		// call the super to finalize setup
