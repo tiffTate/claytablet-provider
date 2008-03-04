@@ -1,13 +1,1 @@
-<com.claytablet.model.event.Account>
-  <id>sdl-syn-dev-provider</id>
-  <createDate>2008-04-04 12:00:00.000 EDT</createDate>
-  <providerId>sdl</providerId>
-  <active>true</active>
-  <email>sdl-syn-dev-provider@clay-tablet.net</email>
-  <publicKey>uPxfiUVTgh9YnJkoWWA1FQRpL02bPB0V</publicKey>
-  <privateKey>+5H3FHiEtAVL8tTML/szwPdSi5FdBSJSYRPt1Flk6E2vI/858RHS1mGfYyJ7FIek</privateKey>
-  <queueType>SQS</queueType>
-  <queueEndpoint>https://queue.amazonaws.com:443/A1UC4Q1DOSUVF0/sdl-syn-dev-provider</queueEndpoint>
-  <storageType>S3</storageType>
-  <storageBucket>sdl-syn-dev-provider</storageBucket>
-</com.claytablet.model.event.Account>
+REPLACE ME
