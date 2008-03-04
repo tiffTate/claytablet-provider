@@ -3,7 +3,7 @@ package com.claytablet.service.event.impl;
 import org.junit.After;
 import org.junit.Before;
 
-import com.claytablet.module.MockModule;
+import com.claytablet.module.MockProviderModule;
 import com.claytablet.service.event.AbsProviderReceiverTest;
 import com.google.inject.Guice;
 
@@ -49,7 +49,7 @@ public class MockReceiverTest extends AbsProviderReceiverTest {
 		log.debug("SETUP: ");
 
 		log.debug("Inject the receiver implementation.");
-		receiver = Guice.createInjector(new MockModule()).getInstance(
+		receiver = Guice.createInjector(new MockProviderModule()).getInstance(
 				MockReceiver.class);
 
 		// call the super to finalize setup
